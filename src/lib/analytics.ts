@@ -30,6 +30,10 @@ export function trackStepComplete(step: number, stepName: string) {
   trackEvent("step_complete", { step, stepName });
 }
 
+export function trackStepView(step: number) {
+  trackEvent(`Step${step}`);
+}
+
 export function trackQuizComplete() {
   trackEvent("quiz_complete");
 }

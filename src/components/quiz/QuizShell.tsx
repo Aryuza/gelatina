@@ -1,7 +1,9 @@
 "use client";
 
 import { AnimatePresence } from "framer-motion";
+import { useEffect } from "react";
 import { useQuizStore } from "@/store/quizStore";
+import { trackStepView } from "@/lib/analytics";
 import ProgressBar from "./ProgressBar";
 import StepWrapper from "./StepWrapper";
 import Step01Hero from "./steps/Step01Hero";
@@ -54,6 +56,10 @@ export default function QuizShell() {
   const currentStep = useQuizStore((s) => s.currentStep);
   const resetQuiz = useQuizStore((s) => s.resetQuiz);
   const StepComponent = stepComponents[currentStep];
+
+  useEffect(() => {
+    trackStepView(currentStep);
+  }, [currentStep]);
 
   const showProgress = currentStep > 1 && currentStep < 20;
 

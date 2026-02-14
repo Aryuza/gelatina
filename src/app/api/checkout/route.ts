@@ -12,6 +12,7 @@ export async function POST(request: NextRequest) {
     const preference = new Preference(client);
 
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+    console.log("DEBUG: MP SiteUrl:", siteUrl);
 
     const result = await preference.create({
       body: {
@@ -20,20 +21,16 @@ export async function POST(request: NextRequest) {
             id: "gelatina-fit-plan",
             title: `${PRODUCT_NAME} - Plan Personalizado${name ? ` para ${name}` : ""}`,
             quantity: 1,
-            unit_price: PRICE,
+            unit_price: Number(PRICE),
             currency_id: "ARS",
           },
         ],
         back_urls: {
           success: `${siteUrl}/gracias`,
           failure: `${siteUrl}/?payment=failure`,
-          pending: `${siteUrl}/gracias?status=pending`,
+          pending: `${siteUrl}/gracias`,
         },
-        auto_return: "approved",
-        payment_methods: {
-          installments: 1,
-        },
-        statement_descriptor: PRODUCT_NAME,
+        statement_descriptor: "GELATINA FIT",
       },
     });
 
