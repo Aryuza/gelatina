@@ -17,9 +17,9 @@ export async function POST(request: NextRequest) {
       items: [
         {
           id: "gelatina-fit-plan",
-          title: `${PRODUCT_NAME} - Plan Personalizado`,
+          title: `${PRODUCT_NAME} - Plan Personalizado${name ? ` para ${name}` : ""}`,
           quantity: 1,
-          unit_price: 3000,
+          unit_price: Number(PRICE),
           currency_id: "ARS",
         },
       ],
@@ -28,9 +28,10 @@ export async function POST(request: NextRequest) {
         failure: `${siteUrl}/?payment=failure`,
         pending: `${siteUrl}/gracias`,
       },
+      statement_descriptor: "GELATINA FIT",
     };
 
-    console.log("DEBUG: MP V4 Sending body:", JSON.stringify(preferenceBody, null, 2));
+    console.log("DEBUG: MP Final - Sending body:", JSON.stringify(preferenceBody, null, 2));
 
     const result = await preference.create({
       body: preferenceBody,
