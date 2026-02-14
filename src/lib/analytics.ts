@@ -39,9 +39,9 @@ export function trackQuizComplete() {
 }
 
 export function trackBeginCheckout(price: number) {
-  trackEvent("begin_checkout", { value: price, currency: "ARS" });
+  trackEvent("BeginCheckout", { value: price, currency: "ARS" });
 }
 
 export function trackPurchase(price: number) {
-  trackEvent("purchase", { value: price, currency: "ARS" });
+  trackEvent("Purchase", { value: price, currency: "ARS" });
 }

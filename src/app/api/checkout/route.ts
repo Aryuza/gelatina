@@ -28,6 +28,7 @@ export async function POST(request: NextRequest) {
         failure: `${siteUrl}/?payment=failure`,
         pending: `${siteUrl}/gracias`,
       },
+      auto_return: "approved",
       statement_descriptor: "GELATINA FIT",
     };
 
