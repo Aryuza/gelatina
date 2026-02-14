@@ -12,26 +12,28 @@ export async function POST(request: NextRequest) {
     const preference = new Preference(client);
 
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
-    console.log("DEBUG: MP SiteUrl:", siteUrl);
+
+    const preferenceBody = {
+      items: [
+        {
+          id: "gelatina-fit-plan",
+          title: `${PRODUCT_NAME} - Plan Personalizado`,
+          quantity: 1,
+          unit_price: 3000,
+          currency_id: "ARS",
+        },
+      ],
+      back_urls: {
+        success: `${siteUrl}/gracias`,
+        failure: `${siteUrl}/?payment=failure`,
+        pending: `${siteUrl}/gracias`,
+      },
+    };
+
+    console.log("DEBUG: MP V4 Sending body:", JSON.stringify(preferenceBody, null, 2));
 
     const result = await preference.create({
-      body: {
-        items: [
-          {
-            id: "gelatina-fit-plan",
-            title: `${PRODUCT_NAME} - Plan Personalizado${name ? ` para ${name}` : ""}`,
-            quantity: 1,
-            unit_price: Number(PRICE),
-            currency_id: "ARS",
-          },
-        ],
-        back_urls: {
-          success: `${siteUrl}/gracias`,
-          failure: `${siteUrl}/?payment=failure`,
-          pending: `${siteUrl}/gracias`,
-        },
-        statement_descriptor: "GELATINA FIT",
-      },
+      body: preferenceBody,
     });
 
     return NextResponse.json({
