@@ -22,7 +22,7 @@ export default function Step10Product() {
 
       <div className="flex justify-center">
         <Image
-          src="/images/product-showcase.png"
+          src="/images/GEL.png"
           alt={PRODUCT_NAME}
           width={280}
           height={157}
