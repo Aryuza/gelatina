@@ -2,6 +2,7 @@
 
 import { useQuizStore } from "@/store/quizStore";
 import { trackStepComplete } from "@/lib/analytics";
+import Image from "next/image";
 import Button from "@/components/ui/Button";
 import { PRODUCT_NAME } from "@/lib/constants";
 
@@ -14,14 +15,19 @@ export default function Step10Product() {
   };
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-4">
       <h2 className="text-2xl font-bold text-gray-900 text-center">
         {answers.name ? `${answers.name}, tenemos` : "Tenemos"} la solución perfecta para vos
       </h2>
 
-      {/* Product image placeholder */}
-      <div className="mx-auto w-40 h-40 rounded-2xl bg-gradient-to-br from-pink-200 to-pink-400 flex items-center justify-center shadow-lg">
-        <span className="text-6xl">🍮</span>
+      <div className="flex justify-center">
+        <Image
+          src="/images/product-showcase.png"
+          alt={PRODUCT_NAME}
+          width={280}
+          height={157}
+          className="rounded-2xl shadow-lg border border-pink-100 w-56 h-auto"
+        />
       </div>
 
       <div className="bg-white rounded-2xl p-5 space-y-4 border border-pink-100">

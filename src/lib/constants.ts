@@ -90,6 +90,46 @@ export const WATER_OPTIONS = [
 
 export const TESTIMONIALS = [
   {
+    name: "Maricarmen S.",
+    city: "San Isidro",
+    text: "Mi vida cambió por completo. Recuperé la energía que había perdido.",
+    weightLost: "12 kg perdidos",
+    rating: 5,
+    image: "/images/testimonials/mi-historia-antes-despues-maricarmen-1.jpg",
+  },
+  {
+    name: "Eugenia L.",
+    city: "CABA",
+    text: "La mejor decisión que tomé. El proceso fue súper amigable.",
+    weightLost: "15 kg perdidos",
+    rating: 5,
+    image: "/images/testimonials/mujer-antes-y-después-de-la-pérdida-peso-en-el-fondo-gris-forma-corporal-se-alteró-durante-retoque-235605213 (1).webp",
+  },
+  {
+    name: "Julieta V.",
+    city: "Córdoba",
+    text: "No puedo creer lo rápido que noté cambios en mi piel y peso.",
+    weightLost: "8 kg perdidos",
+    rating: 5,
+    image: "/images/testimonials/68c009f1270d4.webp",
+  },
+  {
+    name: "Mar T.",
+    city: "Santa Fe",
+    text: "Increíble cómo me ayudó a desinflamarme en pocos días.",
+    weightLost: "10 kg perdidos",
+    rating: 5,
+    image: "/images/testimonials/mar-tarres-antes-y-despues-de-su-tratamiento-para-bajar-de-peso-foto-captura-de-instagram-5F63BVHD7BADZMURZPZZRCJVVU.avif",
+  },
+  {
+    name: "Marcela P.",
+    city: "Mendoza",
+    text: "El sabor es riquísimo y los resultados son reales.",
+    weightLost: "9 kg perdidos",
+    rating: 5,
+    image: "/images/testimonials/58.webp",
+  },
+  {
     name: "Romina G.",
     city: "CABA",
     text: "En 3 semanas bajé 5 kilos sin pasar hambre. La gelatina es riquísima y me sacó la ansiedad por completo.",

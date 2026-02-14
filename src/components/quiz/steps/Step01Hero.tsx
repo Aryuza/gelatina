@@ -16,14 +16,14 @@ export default function Step01Hero() {
   };
 
   return (
-    <div className="flex flex-col items-center text-center space-y-6 pt-8">
+    <div className="flex flex-col items-center text-center space-y-4 pt-4">
       {/* Before/After mini photo */}
       <Image
         src="/images/hero-before-after.png"
         alt="Transformación con Gelatina Fit"
-        width={300}
-        height={180}
-        className="w-64 h-auto rounded-2xl shadow-lg shadow-pink-500/20"
+        width={240}
+        height={144}
+        className="w-48 h-auto rounded-2xl shadow-lg shadow-pink-500/20"
       />
 
       <div className="space-y-3">
