@@ -6,21 +6,24 @@ import { sendDeliveryEmail } from "@/lib/email";
 export async function POST(request: NextRequest) {
     try {
         const searchParams = request.nextUrl.searchParams;
-        const topic = searchParams.get("topic") || searchParams.get("type");
-        const id = searchParams.get("id") || searchParams.get("data.id");
+        const body = await request.json().catch(() => ({}));
 
-        console.log("Webhook received:", { topic, id });
+        const topic = searchParams.get("topic") || searchParams.get("type") || body.type;
+        const paymentId = searchParams.get("id") || searchParams.get("data.id") || body.data?.id || body.id;
+
+        console.log("Webhook received:", { topic, paymentId, action: body.action });
 
         // Mercado Pago sends different notification types. We care about 'payment'
-        if (topic === "payment" || searchParams.get("type") === "payment") {
-            const paymentId = id || (await request.json()).data?.id;
-
-            if (!paymentId) return NextResponse.json({ message: "No payment ID found" }, { status: 200 });
+        if (topic === "payment") {
+            if (!paymentId) {
+                console.warn("Webhook: Missing paymentId in payload");
+                return NextResponse.json({ message: "No payment ID found" }, { status: 200 });
+            }
 
             const client = getMercadoPagoClient();
             const payment = new Payment(client);
 
-            const result = await payment.get({ id: paymentId });
+            const result = await payment.get({ id: String(paymentId) });
 
             console.log("Webhook Payment Status:", result.status, result.status_detail);
 
