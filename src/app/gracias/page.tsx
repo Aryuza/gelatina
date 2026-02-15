@@ -15,6 +15,12 @@ function GraciasContent() {
   useEffect(() => {
     if (!isPending) {
       trackPurchase(PRICE);
+
+      // Trigger delivery email
+      fetch("/api/notify-purchase", {
+        method: "POST",
+        body: JSON.stringify({ name: "Cliente", email: "" }), // Email will be captured or hardcoded for now
+      }).catch(err => console.error("Notification trigger failed", err));
     }
   }, [isPending]);
 
@@ -60,53 +66,134 @@ function GraciasContent() {
   }, [isPending]);
 
   return (
-    <div className="min-h-dvh flex items-center justify-center px-4 py-8">
-      <div className="max-w-md w-full text-center space-y-6">
-        <div className="w-20 h-20 mx-auto rounded-full bg-green-100 flex items-center justify-center">
-          <span className="text-4xl">{isPending ? "⏳" : "🎉"}</span>
-        </div>
+    <div className="min-h-dvh bg-gradient-to-b from-pink-50 to-white pb-12">
+      {/* Hero Section */}
+      <div className="bg-white border-b border-pink-100 py-12 px-4 shadow-sm shadow-pink-500/5">
+        <div className="max-w-2xl mx-auto text-center space-y-6">
+          <div className="w-20 h-20 mx-auto rounded-full bg-pink-100 flex items-center justify-center animate-bounce">
+            <span className="text-4xl text-pink-600">{isPending ? "⏳" : "🎉"}</span>
+          </div>
 
-        <h1 className="text-3xl font-extrabold text-gray-900">
-          {isPending ? "¡Pago en proceso!" : "¡Felicitaciones!"}
-        </h1>
+          <h1 className="text-4xl font-extrabold text-gray-900 leading-tight">
+            {isPending ? "Procesando tu pago..." : "¡Tu transformación empieza hoy!"}
+          </h1>
 
-        {isPending ? (
-          <p className="text-gray-600 leading-relaxed">
-            Tu pago está siendo procesado. Apenas se confirme, vas a recibir un
-            email con toda la información de tu plan personalizado.
+          <p className="text-lg text-gray-600 max-w-lg mx-auto leading-relaxed">
+            {isPending
+              ? "Estamos confirmando tu pago. En unos minutos tendrás acceso a todo tu material."
+              : `¡Felicitaciones por dar el primer paso! Ya tenés acceso a todo tu material de ${PRODUCT_NAME}.`}
           </p>
-        ) : (
-          <>
-            <p className="text-gray-600 leading-relaxed">
-              Tu compra de <strong>{PRODUCT_NAME}</strong> fue exitosa.
-              En los próximos minutos vas a recibir un email con todo lo que
-              necesitás para empezar tu transformación.
-            </p>
+        </div>
+      </div>
 
-            <div className="bg-white rounded-2xl p-5 border border-pink-100 space-y-3 text-left">
-              <h3 className="font-bold text-gray-800">Próximos pasos:</h3>
-              <div className="space-y-2">
+      <div className="max-w-4xl mx-auto px-4 mt-12 space-y-12">
+        {!isPending && (
+          <>
+            {/* Download Section */}
+            <div className="space-y-6">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-pink-600 flex items-center justify-center text-white shadow-lg shadow-pink-500/30">
+                  <span className="text-xl">👇</span>
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900">Tu Plan Personalizado</h2>
+                  <p className="text-gray-500">Descargá tus guías y empezá tu cambio ahora</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {[
-                  "Revisá tu email (incluido spam) para las instrucciones",
-                  "Descargá tu plan personalizado",
-                  "Preparate para tu primera gelatina",
-                  "¡Empezá a ver resultados en la primera semana!",
-                ].map((step, i) => (
-                  <div key={step} className="flex items-start gap-2">
-                    <span className="text-pink-500 font-bold shrink-0">
-                      {i + 1}.
-                    </span>
-                    <span className="text-sm text-gray-600">{step}</span>
+                  {
+                    title: "Mi Plan Nutricional",
+                    desc: "Tu guía de alimentación personalizada para 30 días",
+                    icon: "🥗",
+                    link: "#", // Replace with real Drive link
+                  },
+                  {
+                    title: "Recetario Gelatina Fit",
+                    desc: "Aprendé a preparar tus gelatinas de forma deliciosa",
+                    icon: "📖",
+                    link: "#",
+                  },
+                  {
+                    title: "Guía de Ejercicios",
+                    desc: "Tu rutina ideal complementaria",
+                    icon: "💪",
+                    link: "#",
+                  },
+                  {
+                    title: "Lista de Compras",
+                    desc: "Los ingredientes clave que no te pueden faltar",
+                    icon: "🛒",
+                    link: "#",
+                  },
+                ].map((item) => (
+                  <div
+                    key={item.title}
+                    className="group bg-white rounded-3xl p-6 border border-pink-100 hover:border-pink-300 transition-all hover:shadow-xl hover:shadow-pink-500/10 flex flex-col justify-between space-y-4"
+                  >
+                    <div className="space-y-3">
+                      <div className="text-3xl">{item.icon}</div>
+                      <h3 className="text-xl font-bold text-gray-900 group-hover:text-pink-600 transition-colors">
+                        {item.title}
+                      </h3>
+                      <p className="text-sm text-gray-500 leading-relaxed">{item.desc}</p>
+                    </div>
+                    <Button onClick={() => window.open(item.link, "_blank")} className="w-full">
+                      Descargar PDF →
+                    </Button>
                   </div>
                 ))}
+              </div>
+            </div>
+
+            {/* Next Steps / Dashboard Info */}
+            <div className="bg-pink-600 rounded-[2.5rem] p-8 md:p-12 text-white overflow-hidden relative shadow-2xl shadow-pink-500/40">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-20 -mt-20 blur-3xl"></div>
+              <div className="relative z-10 grid md:grid-cols-2 gap-8 items-center">
+                <div className="space-y-6">
+                  <h2 className="text-3xl font-extrabold leading-tight">
+                    ¿Qué tenés que hacer ahora?
+                  </h2>
+                  <div className="space-y-4">
+                    {[
+                      "Revisá tu email (spam incluido) para el comprobante",
+                      "Descargá todos tus PDFs arriba",
+                      "Unite a nuestra comunidad en Instagram",
+                      "Mañana recibís tu primer tip por email",
+                    ].map((step, i) => (
+                      <div key={step} className="flex items-start gap-4">
+                        <span className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center text-sm font-bold shrink-0">
+                          {i + 1}
+                        </span>
+                        <p className="text-pink-50/90 font-medium">{step}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="bg-white/10 backdrop-blur-md rounded-3xl p-6 border border-white/20 text-center space-y-4">
+                  <div className="text-4xl">💬</div>
+                  <h3 className="text-xl font-bold">¿Necesitás ayuda?</h3>
+                  <p className="text-pink-50 text-sm">
+                    Nuestro equipo de soporte está listo para acompañarte en tu transformación.
+                  </p>
+                  <Button variant="outline" className="border-white text-white hover:bg-white hover:text-pink-600 w-full">
+                    Soporte por WhatsApp
+                  </Button>
+                </div>
               </div>
             </div>
           </>
         )}
 
-        <Button onClick={() => (window.location.href = "/")}>
-          Volver al inicio
-        </Button>
+        <div className="text-center">
+          <button
+            onClick={() => (window.location.href = "/")}
+            className="text-gray-400 hover:text-pink-600 transition-colors text-sm font-medium"
+          >
+            ← Volver al inicio de {PRODUCT_NAME}
+          </button>
+        </div>
       </div>
     </div>
   );
