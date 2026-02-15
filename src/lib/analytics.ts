@@ -4,21 +4,36 @@
 export function trackEvent(eventName: string, params?: Record<string, unknown>) {
   if (typeof window === "undefined") return;
 
+  // Mapping for GA4 (snake_case) vs Meta (Standard Names)
+  const gaEventName = eventName.toLowerCase().replace(/ /g, "_");
+  const metaEventName = eventName; // Keep original for Meta standard events
+
   // Meta Pixel
   const win = window as unknown as Record<string, (...args: unknown[]) => void>;
   if (typeof win.fbq === "function") {
-    win.fbq("track", eventName, params);
+    win.fbq("track", metaEventName, params);
   }
 
-  // Data layer for GTM
+  // Data layer for GTM / GA4
   const w = window as unknown as { dataLayer?: Record<string, unknown>[] };
   if (Array.isArray(w.dataLayer)) {
-    w.dataLayer.push({ event: eventName, ...params });
+    w.dataLayer.push({
+      event: gaEventName,
+      ...params,
+      // Add GA4 specific e-commerce parameters if applicable
+      items: params?.content_ids ? [{
+        item_id: (params.content_ids as string[])[0],
+        item_name: params.content_name,
+        item_category: params.content_category,
+        price: params.value,
+        quantity: 1
+      }] : undefined
+    });
   }
 
   // Debug in development
   if (process.env.NODE_ENV === "development") {
-    console.log(`[Analytics] ${eventName}`, params);
+    console.log(`[Analytics] Meta: ${metaEventName} | GA4: ${gaEventName}`, params);
   }
 }
 
@@ -39,9 +54,23 @@ export function trackQuizComplete() {
 }
 
 export function trackBeginCheckout(price: number) {
-  trackEvent("BeginCheckout", { value: price, currency: "ARS" });
+  trackEvent("InitiateCheckout", { // Meta Standard Name
+    value: price,
+    currency: "ARS",
+    content_name: "Gelatina Fit - Plan Personalizado",
+    content_category: "Plan de Salud",
+    content_ids: ["gelatina-fit-plan"],
+    content_type: "product",
+  });
 }
 
 export function trackPurchase(price: number) {
-  trackEvent("Purchase", { value: price, currency: "ARS" });
+  trackEvent("Purchase", { // Meta Standard Name
+    value: price,
+    currency: "ARS",
+    content_name: "Gelatina Fit - Plan Personalizado",
+    content_category: "Plan de Salud",
+    content_ids: ["gelatina-fit-plan"],
+    content_type: "product",
+  });
 }

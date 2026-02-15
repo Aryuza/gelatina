@@ -1,5 +1,5 @@
 export const PRODUCT_NAME = "Gelatina Fit";
-export const PRICE = 3000;
+export const PRICE = 3900;
 export const ORIGINAL_PRICE = 9999;
 export const CURRENCY = "ARS";
 export const NUTRITIONIST = "Lic. Carolina Méndez";
