@@ -6,11 +6,14 @@ import { trackPurchase } from "@/lib/analytics";
 import { PRODUCT_NAME, PRICE } from "@/lib/constants";
 import Button from "@/components/ui/Button";
 import { Suspense } from "react";
+import { useQuizStore } from "@/store/quizStore";
 
 function GraciasContent() {
   const searchParams = useSearchParams();
   const status = searchParams.get("status");
   const isPending = status === "pending";
+
+  const { name } = useQuizStore((state) => state.answers);
 
   useEffect(() => {
     if (!isPending) {
@@ -19,10 +22,13 @@ function GraciasContent() {
       // Trigger delivery email
       fetch("/api/notify-purchase", {
         method: "POST",
-        body: JSON.stringify({ name: "Cliente", email: "" }), // Email will be captured or hardcoded for now
+        body: JSON.stringify({
+          name: name || "Cliente",
+          email: "gelatinafitdetox@gmail.com"
+        }),
       }).catch(err => console.error("Notification trigger failed", err));
     }
-  }, [isPending]);
+  }, [isPending, name]);
 
   // Simple confetti effect
   useEffect(() => {
