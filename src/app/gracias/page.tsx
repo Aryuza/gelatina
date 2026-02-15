@@ -211,10 +211,16 @@ function GraciasContent() {
                   <div className="text-4xl">💬</div>
                   <h3 className="text-xl font-bold">¿Necesitás ayuda?</h3>
                   <p className="text-pink-50 text-sm">
-                    Nuestro equipo de soporte está listo para acompañarte en tu transformación.
+                    Nuestro equipo de soporte está listo para acompañarte. Escribinos a:
+                    <br />
+                    <span className="font-bold underline">gelatinafitdetox@gmail.com</span>
                   </p>
-                  <Button variant="outline" className="border-white text-white hover:bg-white hover:text-pink-600 w-full">
-                    Soporte por WhatsApp
+                  <Button
+                    variant="outline"
+                    className="border-white text-white hover:bg-white hover:text-pink-600 w-full"
+                    onClick={() => window.location.href = "mailto:gelatinafitdetox@gmail.com"}
+                  >
+                    Enviar Email de Soporte
                   </Button>
                 </div>
               </div>
