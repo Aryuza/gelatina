@@ -122,7 +122,7 @@ function GraciasContent() {
                     <p className="text-gray-500 text-lg">Tu guía central y el corazón de tu transformación.</p>
                   </div>
                   <Button
-                    onClick={() => window.open("https://drive.google.com/file/d/18iwxPDZfdpl_fTCVsWEJypKljvIEa7Bv/view?usp=sharing", "_blank")}
+                    onClick={() => window.open("https://drive.google.com/file/d/1MBymg4lpZxusqHOnnAci22qOPcuKJBMW/view?usp=sharing", "_blank")}
                     className="w-full md:w-auto px-12 py-4 text-lg"
                     pulse
                   >

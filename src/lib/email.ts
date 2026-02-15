@@ -31,7 +31,7 @@ export async function sendDeliveryEmail(to: string, name: string) {
           <div style="background-color: #fff1f2; padding: 25px; border-radius: 20px; margin: 30px 0; border: 1px solid #fecdd3;">
             <p style="margin-top: 0; font-weight: bold; color: #9f1239; font-size: 18px;">📚 Tus Guías Digitales (PDF):</p>
             <ul style="padding-left: 0; list-style: none;">
-              <li style="margin-bottom: 10px;">✅ <a href="https://drive.google.com/file/d/18iwxPDZfdpl_fTCVsWEJypKljvIEa7Bv/view?usp=sharing" style="color: #db2777; text-decoration: underline;">Plan Personalizado Gelatina Fit</a></li>
+              <li style="margin-bottom: 10px;">✅ <a href="https://drive.google.com/file/d/1MBymg4lpZxusqHOnnAci22qOPcuKJBMW/view?usp=sharing" style="color: #db2777; text-decoration: underline;">Plan Personalizado Gelatina Fit</a></li>
               <li style="margin-bottom: 10px;">✅ <a href="https://drive.google.com/file/d/1vanSRfPEbajxH6LG9lQsiVuK1CTLq_iW/view?usp=sharing" style="color: #db2777; text-decoration: underline;">Recetas Detox para Deshinchar</a></li>
               <li style="margin-bottom: 10px;">✅ <a href="https://drive.google.com/file/d/1HpzCMBvvjHl4B_7N0CZTTELm2KdbwdtD/view?usp=sharing" style="color: #db2777; text-decoration: underline;">Dieta Detox 21 Días</a></li>
               <li style="margin-bottom: 10px;">✅ <a href="https://drive.google.com/file/d/1iC8L8Mxo_cg7qTFbDjD0HR9rUxt0e-63/view?usp=sharing" style="color: #db2777; text-decoration: underline;">Dieta Antiinflamatoria</a></li>
