@@ -147,49 +147,49 @@ function GraciasContent() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {[
                   {
-                    title: "Recetas Detox",
+                    title: "Recetas Detox para Deshinchar",
                     desc: "Para deshinchar y desinflamar eficazmente",
                     icon: "🥣",
                     link: "https://drive.google.com/file/d/1vanSRfPEbajxH6LG9lQsiVuK1CTLq_iW/view?usp=sharing",
                   },
                   {
-                    title: "Dieta Detox 21 Días",
+                    title: "DIETA DETOX 21 DIAS",
                     desc: "Plan intensivo de limpieza profunda",
                     icon: "📅",
                     link: "https://drive.google.com/file/d/1HpzCMBvvjHl4B_7N0CZTTELm2KdbwdtD/view?usp=sharing",
                   },
                   {
-                    title: "Jugos y Energizantes",
+                    title: "JUGOS Y ENERGIZANTES NATURALES",
                     desc: "Energía natural de frutas y verduras",
                     icon: "🥤",
                     link: "https://drive.google.com/file/d/18iwxPDZfdpl_fTCVsWEJypKljvIEa7Bv/view?usp=sharing",
                   },
                   {
-                    title: "Dieta Antiinflamatoria",
+                    title: "DIETA ANTIINFLAMATORIA",
                     desc: "Guía para reducir dolor e inflamación",
                     icon: "🦴",
                     link: "https://drive.google.com/file/d/1iC8L8Mxo_cg7qTFbDjD0HR9rUxt0e-63/view?usp=sharing",
                   },
                   {
-                    title: "Cambiar tu Vida",
+                    title: "DETOX PARA CAMBIAR TU VIDA",
                     desc: "Transformación mental y hábitos",
                     icon: "✨",
                     link: "https://drive.google.com/file/d/1oQ5-Jt7R04T2Rej8VE4_iRawlhOaiR3Z/view?usp=sharing",
                   },
                   {
-                    title: "Detox con MED",
+                    title: "DETOX CON MED",
                     desc: "Metodología avanzada de salud",
                     icon: "🏥",
                     link: "https://drive.google.com/file/d/1pCgsOXtE68JiUxcc8sw-dUUhOkFGjQCc/view?usp=sharing",
                   },
                   {
-                    title: "21 Jugos Detox",
+                    title: "21 JUGOS DETOX",
                     desc: "Una opción refrescante para cada día",
                     icon: "🍹",
                     link: "https://drive.google.com/file/d/1Ney9M-NpEPjKpDlBtoeBzDh1XL3kFAYj/view?usp=sharing",
                   },
                   {
-                    title: "Jugos para Perder Peso",
+                    title: "21 JUGOS DETOX PARA PERDER PESO",
                     desc: "Fórmulas específicas para quemar grasa",
                     icon: "🔥",
                     link: "https://drive.google.com/file/d/1zOWjEAcjivrJY2b4uossH0dLRjBwSa1n/view?usp=sharing",

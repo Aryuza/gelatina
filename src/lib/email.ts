@@ -31,11 +31,15 @@ export async function sendDeliveryEmail(to: string, name: string) {
           <div style="background-color: #fff1f2; padding: 25px; border-radius: 20px; margin: 30px 0; border: 1px solid #fecdd3;">
             <p style="margin-top: 0; font-weight: bold; color: #9f1239; font-size: 18px;">📚 Tus Guías Digitales (PDF):</p>
             <ul style="padding-left: 0; list-style: none;">
-              <li style="margin-bottom: 10px;">✅ <a href="https://drive.google.com/file/d/1MBymg4lpZxusqHOnnAci22qOPcuKJBMW/view?usp=sharing" style="color: #db2777; text-decoration: underline;">Plan Personalizado Gelatina Fit</a></li>
+              <li style="margin-bottom: 10px;">✅ <a href="https://drive.google.com/file/d/1MBymg4lpZxusqHOnnAci22qOPcuKJBMW/view?usp=sharing" style="color: #db2777; text-decoration: underline;">GELATINA FIT - PLAN PERSONALIZADO</a></li>
               <li style="margin-bottom: 10px;">✅ <a href="https://drive.google.com/file/d/1vanSRfPEbajxH6LG9lQsiVuK1CTLq_iW/view?usp=sharing" style="color: #db2777; text-decoration: underline;">Recetas Detox para Deshinchar</a></li>
-              <li style="margin-bottom: 10px;">✅ <a href="https://drive.google.com/file/d/1HpzCMBvvjHl4B_7N0CZTTELm2KdbwdtD/view?usp=sharing" style="color: #db2777; text-decoration: underline;">Dieta Detox 21 Días</a></li>
-              <li style="margin-bottom: 10px;">✅ <a href="https://drive.google.com/file/d/1iC8L8Mxo_cg7qTFbDjD0HR9rUxt0e-63/view?usp=sharing" style="color: #db2777; text-decoration: underline;">Dieta Antiinflamatoria</a></li>
-              <li style="margin-bottom: 10px;">✅ <a href="https://drive.google.com/file/d/1zOWjEAcjivrJY2b4uossH0dLRjBwSa1n/view?usp=sharing" style="color: #db2777; text-decoration: underline;">Jugos para Perder Peso</a></li>
+              <li style="margin-bottom: 10px;">✅ <a href="https://drive.google.com/file/d/18iwxPDZfdpl_fTCVsWEJypKljvIEa7Bv/view?usp=sharing" style="color: #db2777; text-decoration: underline;">JUGOS Y ENERGIZANTES NATURALES</a></li>
+              <li style="margin-bottom: 10px;">✅ <a href="https://drive.google.com/file/d/1HpzCMBvvjHl4B_7N0CZTTELm2KdbwdtD/view?usp=sharing" style="color: #db2777; text-decoration: underline;">DIETA DETOX 21 DIAS</a></li>
+              <li style="margin-bottom: 10px;">✅ <a href="https://drive.google.com/file/d/1iC8L8Mxo_cg7qTFbDjD0HR9rUxt0e-63/view?usp=sharing" style="color: #db2777; text-decoration: underline;">DIETA ANTIINFLAMATORIA</a></li>
+              <li style="margin-bottom: 10px;">✅ <a href="https://drive.google.com/file/d/1oQ5-Jt7R04T2Rej8VE4_iRawlhOaiR3Z/view?usp=sharing" style="color: #db2777; text-decoration: underline;">DETOX PARA CAMBIAR TU VIDA</a></li>
+              <li style="margin-bottom: 10px;">✅ <a href="https://drive.google.com/file/d/1pCgsOXtE68JiUxcc8sw-dUUhOkFGjQCc/view?usp=sharing" style="color: #db2777; text-decoration: underline;">DETOX CON MED</a></li>
+              <li style="margin-bottom: 10px;">✅ <a href="https://drive.google.com/file/d/1Ney9M-NpEPjKpDlBtoeBzDh1XL3kFAYj/view?usp=sharing" style="color: #db2777; text-decoration: underline;">21 JUGOS DETOX</a></li>
+              <li style="margin-bottom: 10px;">✅ <a href="https://drive.google.com/file/d/1zOWjEAcjivrJY2b4uossH0dLRjBwSa1n/view?usp=sharing" style="color: #db2777; text-decoration: underline;">21 JUGOS DETOX PARA PERDER PESO</a></li>
             </ul>
             <p style="font-size: 14px; color: #e11d48; margin-bottom: 0;">* Tip: Guarda estos links o descarga los archivos en tu celular/PC.</p>
           </div>
