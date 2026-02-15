@@ -5,45 +5,49 @@ import { useSearchParams } from "next/navigation";
 import { trackPurchase } from "@/lib/analytics";
 import { PRODUCT_NAME, PRICE } from "@/lib/constants";
 import Button from "@/components/ui/Button";
-import { Suspense } from "react";
 import { useQuizStore } from "@/store/quizStore";
 
-const { name: storedName } = useQuizStore((state) => state.answers);
-const [payerName, setPayerName] = useState<string | null>(null);
+function GraciasContent() {
+  const searchParams = useSearchParams();
+  const status = searchParams.get("status");
+  const isPending = status === "pending";
 
-useEffect(() => {
-  const paymentId = searchParams.get("payment_id");
+  const { name: storedName } = useQuizStore((state) => state.answers);
+  const [payerName, setPayerName] = useState<string | null>(null);
 
-  // 1. Track Purchase in Analytics (Client-side)
-  if (!isPending) {
-    trackPurchase(PRICE);
-  }
+  useEffect(() => {
+    const paymentId = searchParams.get("payment_id") || searchParams.get("payment_id"); // Support both forms if needed
 
-  // 2. Verify Payment and Trigger Automated Email using Mercado Pago data
-  if (!isPending && paymentId) {
-    fetch(`/api/checkout/verify?payment_id=${paymentId}`)
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          console.log("Payment verified and email sent to:", data.email);
-          if (data.name) setPayerName(data.name);
-        }
-      })
-      .catch(err => console.error("Verification failed:", err));
-  }
-}, [isPending, searchParams]);
+    // 1. Track Purchase in Analytics (Client-side)
+    if (!isPending) {
+      trackPurchase(PRICE);
+    }
 
-const displayName = payerName || storedName || "Cliente";
+    // 2. Verify Payment and Trigger Automated Email using Mercado Pago data
+    if (!isPending && paymentId) {
+      fetch(`/api/checkout/verify?payment_id=${paymentId}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            console.log("Payment verified and email sent to:", data.email);
+            if (data.name) setPayerName(data.name);
+          }
+        })
+        .catch(err => console.error("Verification failed:", err));
+    }
+  }, [isPending, searchParams]);
 
-// Simple confetti effect
-useEffect(() => {
-  if (isPending) return;
-  const colors = ["#ec4899", "#f472b6", "#f9a8d4", "#fce7f3", "#fbbf24"];
-  const confetti: HTMLDivElement[] = [];
+  const displayName = payerName || storedName || "Cliente";
 
-  for (let i = 0; i < 50; i++) {
-    const el = document.createElement("div");
-    el.style.cssText = `
+  // Simple confetti effect
+  useEffect(() => {
+    if (isPending) return;
+    const colors = ["#ec4899", "#f472b6", "#f9a8d4", "#fce7f3", "#fbbf24"];
+    const confetti: HTMLDivElement[] = [];
+
+    for (let i = 0; i < 50; i++) {
+      const el = document.createElement("div");
+      el.style.cssText = `
         position: fixed;
         width: 10px;
         height: 10px;
@@ -55,12 +59,12 @@ useEffect(() => {
         pointer-events: none;
         animation: confetti-fall ${2 + Math.random() * 3}s linear forwards;
       `;
-    document.body.appendChild(el);
-    confetti.push(el);
-  }
+      document.body.appendChild(el);
+      confetti.push(el);
+    }
 
-  const style = document.createElement("style");
-  style.textContent = `
+    const style = document.createElement("style");
+    style.textContent = `
       @keyframes confetti-fall {
         to {
           transform: translateY(100vh) rotate(${360 + Math.random() * 360}deg);
@@ -68,50 +72,38 @@ useEffect(() => {
         }
       }
     `;
-  document.head.appendChild(style);
+    document.head.appendChild(style);
 
-  return () => {
-    confetti.forEach((el) => el.remove());
-    style.remove();
-  };
-}, [isPending]);
+    return () => {
+      confetti.forEach((el) => el.remove());
+      style.remove();
+    };
+  }, [isPending]);
 
-return (
-  <div className="min-h-dvh bg-gradient-to-b from-pink-50 to-white pb-12">
-    {/* Hero Section */}
-    <div className="bg-white border-b border-pink-100 py-12 px-4 shadow-sm shadow-pink-500/5">
-      <div className="max-w-2xl mx-auto text-center space-y-6">
-        <div className="w-20 h-20 mx-auto rounded-full bg-pink-100 flex items-center justify-center animate-bounce">
-          <span className="text-4xl text-pink-600">{isPending ? "⏳" : "🎉"}</span>
+  return (
+    <div className="min-h-dvh bg-gradient-to-b from-pink-50 to-white pb-12">
+      {/* Hero Section */}
+      <div className="bg-white border-b border-pink-100 py-12 px-4 shadow-sm shadow-pink-500/5">
+        <div className="max-w-2xl mx-auto text-center space-y-6">
+          <div className="w-20 h-20 mx-auto rounded-full bg-pink-100 flex items-center justify-center animate-bounce">
+            <span className="text-4xl text-pink-600">{isPending ? "⏳" : "🎉"}</span>
+          </div>
+
+          <h1 className="text-4xl font-extrabold text-gray-900 leading-tight">
+            {isPending ? "Procesando tu pago..." : "¡Tu transformación empieza hoy!"}
+          </h1>
+
+          <p className="text-lg text-gray-600 max-w-lg mx-auto leading-relaxed">
+            {isPending
+              ? "Estamos confirmando tu pago. En unos minutos tendrás acceso a todo tu material."
+              : `¡Felicitaciones por dar el primer paso! Ya tenés acceso a todo tu material de ${PRODUCT_NAME}.`}
+          </p>
         </div>
-
-        <h1 className="text-4xl font-extrabold text-gray-900 leading-tight">
-          {isPending ? "Procesando tu pago..." : "¡Tu transformación empieza hoy!"}
-        </h1>
-
-        <p className="text-lg text-gray-600 max-w-lg mx-auto leading-relaxed">
-          {isPending
-            ? "Estamos confirmando tu pago. En unos minutos tendrás acceso a todo tu material."
-            : `¡Felicitaciones por dar el primer paso! Ya tenés acceso a todo tu material de ${PRODUCT_NAME}.`}
-        </p>
       </div>
-    </div>
 
-    <div className="max-w-4xl mx-auto px-4 mt-12 space-y-12">
-      {!isPending && (
-        <>
-          {/* Download Section */}
-          <div className="space-y-6">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-pink-600 flex items-center justify-center text-white shadow-lg shadow-pink-500/30">
-                <span className="text-xl">👇</span>
-              </div>
-              <div>
-                <h2 className="text-2xl font-bold text-gray-900">Tu Plan Personalizado</h2>
-                <p className="text-gray-500">Descargá tus guías y empezá tu cambio ahora</p>
-              </div>
-            </div>
-
+      <div className="max-w-4xl mx-auto px-4 mt-12 space-y-12">
+        {!isPending && (
+          <>
             {/* Main Featured Plan */}
             <div className="bg-white rounded-[2.5rem] p-8 border-2 border-pink-500 shadow-2xl shadow-pink-500/20 relative overflow-hidden group">
               <div className="absolute top-0 right-0 p-4">
@@ -220,64 +212,63 @@ return (
                 ))}
               </div>
             </div>
-          </div>
 
-          {/* Next Steps / Dashboard Info */}
-          <div className="bg-pink-600 rounded-[2.5rem] p-8 md:p-12 text-white overflow-hidden relative shadow-2xl shadow-pink-500/40">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-20 -mt-20 blur-3xl"></div>
-            <div className="relative z-10 grid md:grid-cols-2 gap-8 items-center">
-              <div className="space-y-6">
-                <h2 className="text-3xl font-extrabold leading-tight">
-                  ¿Qué tenés que hacer ahora?
-                </h2>
-                <div className="space-y-4">
-                  {[
-                    "Revisá tu email (spam incluido) para el comprobante",
-                    "Descargá todos tus PDFs arriba",
-                    "Unite a nuestra comunidad en Instagram",
-                    "Mañana recibís tu primer tip por email",
-                  ].map((step, i) => (
-                    <div key={step} className="flex items-start gap-4">
-                      <span className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center text-sm font-bold shrink-0">
-                        {i + 1}
-                      </span>
-                      <p className="text-pink-50/90 font-medium">{step}</p>
-                    </div>
-                  ))}
+            {/* Next Steps / Dashboard Info */}
+            <div className="bg-pink-600 rounded-[2.5rem] p-8 md:p-12 text-white overflow-hidden relative shadow-2xl shadow-pink-500/40">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-20 -mt-20 blur-3xl"></div>
+              <div className="relative z-10 grid md:grid-cols-2 gap-8 items-center">
+                <div className="space-y-6">
+                  <h2 className="text-3xl font-extrabold leading-tight">
+                    ¿Qué tenés que hacer ahora?
+                  </h2>
+                  <div className="space-y-4">
+                    {[
+                      "Revisá tu email (spam incluido) para el comprobante",
+                      "Descargá todos tus PDFs arriba",
+                      "Unite a nuestra comunidad en Instagram",
+                      "Mañana recibís tu primer tip por email",
+                    ].map((step, i) => (
+                      <div key={step} className="flex items-start gap-4">
+                        <span className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center text-sm font-bold shrink-0">
+                          {i + 1}
+                        </span>
+                        <p className="text-pink-50/90 font-medium">{step}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="bg-white/10 backdrop-blur-md rounded-3xl p-6 border border-white/20 text-center space-y-4">
+                  <div className="text-4xl">💬</div>
+                  <h3 className="text-xl font-bold">¿Necesitás ayuda?</h3>
+                  <p className="text-pink-50 text-sm">
+                    Nuestro equipo de soporte está listo para acompañarte. Escribinos a:
+                    <br />
+                    <span className="font-bold underline">gelatinafitdetox@gmail.com</span>
+                  </p>
+                  <Button
+                    variant="outline"
+                    className="border-white text-white hover:bg-white hover:text-pink-600 w-full"
+                    onClick={() => window.location.href = "mailto:gelatinafitdetox@gmail.com"}
+                  >
+                    Enviar Email de Soporte
+                  </Button>
                 </div>
               </div>
-              <div className="bg-white/10 backdrop-blur-md rounded-3xl p-6 border border-white/20 text-center space-y-4">
-                <div className="text-4xl">💬</div>
-                <h3 className="text-xl font-bold">¿Necesitás ayuda?</h3>
-                <p className="text-pink-50 text-sm">
-                  Nuestro equipo de soporte está listo para acompañarte. Escribinos a:
-                  <br />
-                  <span className="font-bold underline">gelatinafitdetox@gmail.com</span>
-                </p>
-                <Button
-                  variant="outline"
-                  className="border-white text-white hover:bg-white hover:text-pink-600 w-full"
-                  onClick={() => window.location.href = "mailto:gelatinafitdetox@gmail.com"}
-                >
-                  Enviar Email de Soporte
-                </Button>
-              </div>
             </div>
-          </div>
-        </>
-      )}
+          </>
+        )}
 
-      <div className="text-center">
-        <button
-          onClick={() => (window.location.href = "/")}
-          className="text-gray-400 hover:text-pink-600 transition-colors text-sm font-medium"
-        >
-          ← Volver al inicio de {PRODUCT_NAME}
-        </button>
+        <div className="text-center">
+          <button
+            onClick={() => (window.location.href = "/")}
+            className="text-gray-400 hover:text-pink-600 transition-colors text-sm font-medium"
+          >
+            ← Volver al inicio de {PRODUCT_NAME}
+          </button>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
 }
 
 export default function GraciasPage() {
