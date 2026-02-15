@@ -11,9 +11,9 @@ export async function POST(request: NextRequest) {
     const client = getMercadoPagoClient();
     const preference = new Preference(client);
 
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://gelatina-delta.vercel.app";
 
-    const preferenceBody = {
+    const preferenceBody: Record<string, unknown> = {
       items: [
         {
           id: "gelatina-fit-plan",
@@ -26,13 +26,15 @@ export async function POST(request: NextRequest) {
       back_urls: {
         success: `${siteUrl}/gracias`,
         failure: `${siteUrl}/?payment=failure`,
-        pending: `${siteUrl}/gracias`,
+        pending: `${siteUrl}/gracias?status=pending`,
       },
-      auto_return: "approved",
       statement_descriptor: "GELATINA FIT",
     };
 
-    console.log("DEBUG: MP Final - Sending body:", JSON.stringify(preferenceBody, null, 2));
+    // auto_return only works with HTTPS URLs (not localhost)
+    if (siteUrl.startsWith("https://")) {
+      preferenceBody.auto_return = "approved";
+    }
 
     const result = await preference.create({
       body: preferenceBody,
@@ -42,10 +44,17 @@ export async function POST(request: NextRequest) {
       init_point: result.init_point,
       id: result.id,
     });
-  } catch (error) {
-    console.error("Checkout error:", error);
+  } catch (error: unknown) {
+    const err = error as { message?: string; stack?: string; response?: { data?: unknown } };
+    console.error("Checkout error:", {
+      message: err.message,
+      response: err.response?.data || err.response,
+    });
     return NextResponse.json(
-      { error: "Error creating payment preference" },
+      {
+        error: "Error creating payment preference",
+        details: err.message,
+      },
       { status: 500 }
     );
   }

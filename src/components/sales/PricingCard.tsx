@@ -32,7 +32,7 @@ export default function PricingCard({ onCheckout, loading }: PricingCardProps) {
             {formatPrice(ORIGINAL_PRICE)}
           </p>
           <p className="text-4xl font-extrabold text-pink-600">
-            {formatPrice(PRICE)}
+            {formatPrice(PRICE)} <span className="text-2xl font-bold">ARS 🇦🇷</span>
           </p>
           <p className="text-sm text-gray-500">Pago único — Sin suscripción</p>
         </div>
