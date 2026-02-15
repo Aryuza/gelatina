@@ -32,6 +32,7 @@ export async function POST(request: NextRequest) {
         },
         // auto_return only works with HTTPS URLs (MercadoPago rejects localhost)
         ...(isHttps ? { auto_return: "approved" } : {}),
+        notification_url: `${siteUrl}/api/checkout/webhook`,
         statement_descriptor: "GELATINA FIT",
       },
     });
