@@ -12,32 +12,28 @@ export async function POST(request: NextRequest) {
     const preference = new Preference(client);
 
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://gelatina-delta.vercel.app";
-
-    const preferenceBody: Record<string, unknown> = {
-      items: [
-        {
-          id: "gelatina-fit-plan",
-          title: `${PRODUCT_NAME} - Plan Personalizado${name ? ` para ${name}` : ""}`,
-          quantity: 1,
-          unit_price: Number(PRICE),
-          currency_id: "ARS",
-        },
-      ],
-      back_urls: {
-        success: `${siteUrl}/gracias`,
-        failure: `${siteUrl}/?payment=failure`,
-        pending: `${siteUrl}/gracias?status=pending`,
-      },
-      statement_descriptor: "GELATINA FIT",
-    };
-
-    // auto_return only works with HTTPS URLs (not localhost)
-    if (siteUrl.startsWith("https://")) {
-      preferenceBody.auto_return = "approved";
-    }
+    const isHttps = siteUrl.startsWith("https://");
 
     const result = await preference.create({
-      body: preferenceBody,
+      body: {
+        items: [
+          {
+            id: "gelatina-fit-plan",
+            title: `${PRODUCT_NAME} - Plan Personalizado${name ? ` para ${name}` : ""}`,
+            quantity: 1,
+            unit_price: Number(PRICE),
+            currency_id: "ARS",
+          },
+        ],
+        back_urls: {
+          success: `${siteUrl}/gracias`,
+          failure: `${siteUrl}/?payment=failure`,
+          pending: `${siteUrl}/gracias?status=pending`,
+        },
+        // auto_return only works with HTTPS URLs (MercadoPago rejects localhost)
+        ...(isHttps ? { auto_return: "approved" } : {}),
+        statement_descriptor: "GELATINA FIT",
+      },
     });
 
     return NextResponse.json({
@@ -45,7 +41,7 @@ export async function POST(request: NextRequest) {
       id: result.id,
     });
   } catch (error: unknown) {
-    const err = error as { message?: string; stack?: string; response?: { data?: unknown } };
+    const err = error as { message?: string; response?: { data?: unknown } };
     console.error("Checkout error:", {
       message: err.message,
       response: err.response?.data || err.response,
