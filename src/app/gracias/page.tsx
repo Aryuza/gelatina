@@ -107,31 +107,61 @@ function GraciasContent() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {[
                   {
-                    title: "Mi Plan Nutricional",
-                    desc: "Tu guía de alimentación personalizada para 30 días",
-                    icon: "🥗",
-                    link: "#", // Replace with real Drive link
+                    title: "Plan Personalizado",
+                    desc: "Tu guía central de Gelatina Fit",
+                    icon: "⚖️",
+                    link: "https://drive.google.com/file/d/18iwxPDZfdpl_fTCVsWEJypKljvIEa7Bv/view?usp=sharing",
                   },
                   {
-                    title: "Recetario Gelatina Fit",
-                    desc: "Aprendé a preparar tus gelatinas de forma deliciosa",
-                    icon: "📖",
-                    link: "#",
+                    title: "Recetas Detox",
+                    desc: "Para deshinchar y desinflamar",
+                    icon: "🥣",
+                    link: "https://drive.google.com/file/d/1vanSRfPEbajxH6LG9lQsiVuK1CTLq_iW/view?usp=sharing",
                   },
                   {
-                    title: "Guía de Ejercicios",
-                    desc: "Tu rutina ideal complementaria",
-                    icon: "💪",
-                    link: "#",
+                    title: "Dieta Detox 21 Días",
+                    desc: "Plan intensivo de limpieza",
+                    icon: "📅",
+                    link: "https://drive.google.com/file/d/1HpzCMBvvjHl4B_7N0CZTTELm2KdbwdtD/view?usp=sharing",
                   },
                   {
-                    title: "Lista de Compras",
-                    desc: "Los ingredientes clave que no te pueden faltar",
-                    icon: "🛒",
-                    link: "#",
+                    title: "Jugos y Energizantes",
+                    desc: "Energía natural cada mañana",
+                    icon: "🥤",
+                    link: "https://drive.google.com/file/d/18iwxPDZfdpl_fTCVsWEJypKljvIEa7Bv/view?usp=sharing",
+                  },
+                  {
+                    title: "Antiinflamatoria",
+                    desc: "Guía para reducir la inflamación",
+                    icon: "🦴",
+                    link: "https://drive.google.com/file/d/1iC8L8Mxo_cg7qTFbDjD0HR9rUxt0e-63/view?usp=sharing",
+                  },
+                  {
+                    title: "Cambiar tu Vida",
+                    desc: "Mindset y hábitos saludables",
+                    icon: "✨",
+                    link: "https://drive.google.com/file/d/1oQ5-Jt7R04T2Rej8VE4_iRawlhOaiR3Z/view?usp=sharing",
+                  },
+                  {
+                    title: "Detox con MED",
+                    desc: "Metodología avanzada",
+                    icon: "🏥",
+                    link: "https://drive.google.com/file/d/1pCgsOXtE68JiUxcc8sw-dUUhOkFGjQCc/view?usp=sharing",
+                  },
+                  {
+                    title: "21 Jugos Detox",
+                    desc: "Variedad para cada día",
+                    icon: "🍹",
+                    link: "https://drive.google.com/file/d/1Ney9M-NpEPjKpDlBtoeBzDh1XL3kFAYj/view?usp=sharing",
+                  },
+                  {
+                    title: "Jugos para Perder Peso",
+                    desc: "Específicos para quemar grasa",
+                    icon: "🔥",
+                    link: "https://drive.google.com/file/d/1zOWjEAcjivrJY2b4uossH0dLRjBwSa1n/view?usp=sharing",
                   },
                 ].map((item) => (
                   <div
@@ -145,8 +175,8 @@ function GraciasContent() {
                       </h3>
                       <p className="text-sm text-gray-500 leading-relaxed">{item.desc}</p>
                     </div>
-                    <Button onClick={() => window.open(item.link, "_blank")} className="w-full">
-                      Descargar PDF →
+                    <Button onClick={() => window.open(item.link, "_blank")} variant="outline" className="w-full border-pink-200 text-pink-600 hover:bg-pink-50">
+                      Abrir PDF →
                     </Button>
                   </div>
                 ))}
