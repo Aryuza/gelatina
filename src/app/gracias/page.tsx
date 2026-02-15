@@ -16,7 +16,8 @@ function GraciasContent() {
   const [payerName, setPayerName] = useState<string | null>(null);
 
   useEffect(() => {
-    const paymentId = searchParams.get("payment_id") || searchParams.get("payment_id"); // Support both forms if needed
+    // Mercado Pago passes either payment_id or collection_id depending on the flow
+    const paymentId = searchParams.get("payment_id") || searchParams.get("collection_id");
 
     // 1. Track Purchase in Analytics (Client-side)
     if (!isPending) {

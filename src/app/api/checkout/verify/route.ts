@@ -16,12 +16,17 @@ export async function GET(request: NextRequest) {
         const payment = new Payment(client);
 
         // Fetch payment details from Mercado Pago
+        console.log("Verifying payment with ID:", paymentId);
         const result = await payment.get({ id: paymentId });
+
+        // Log the whole status for debugging
+        console.log("MP Payment Status:", result.status, result.status_detail);
 
         const email = result.payer?.email;
         const firstName = result.payer?.first_name || result.payer?.email?.split('@')[0] || "Cliente";
 
-        if (result.status === "approved" && email) {
+        if ((result.status === "approved" || result.status === "authorized") && email) {
+            console.log("Payment approved. Sending email to:", email);
             // Trigger delivery email
             await sendDeliveryEmail(email, firstName);
 
@@ -33,6 +38,7 @@ export async function GET(request: NextRequest) {
             });
         }
 
+        console.warn("Payment not approved or email missing:", { status: result.status, email });
         return NextResponse.json({
             success: false,
             status: result.status,

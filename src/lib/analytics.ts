@@ -4,9 +4,13 @@
 export function trackEvent(eventName: string, params?: Record<string, unknown>) {
   if (typeof window === "undefined") return;
 
-  // Mapping for GA4 (snake_case) vs Meta (Standard Names)
-  const gaEventName = eventName.toLowerCase().replace(/ /g, "_");
-  const metaEventName = eventName; // Keep original for Meta standard events
+  // Mapping for GA4 vs Meta Standard events
+  let gaEventName = eventName.toLowerCase().replace(/ /g, "_");
+  const metaEventName = eventName;
+
+  // Specific mapping for GA4 Ecommerce
+  if (eventName === "InitiateCheckout") gaEventName = "begin_checkout";
+  if (eventName === "Purchase") gaEventName = "purchase";
 
   // Meta Pixel
   const win = window as unknown as Record<string, (...args: unknown[]) => void>;
@@ -46,7 +50,7 @@ export function trackStepComplete(step: number, stepName: string) {
 }
 
 export function trackStepView(step: number) {
-  trackEvent(`Step${step}`);
+  trackEvent(`Step${step}`, { step_number: step });
 }
 
 export function trackQuizComplete() {
