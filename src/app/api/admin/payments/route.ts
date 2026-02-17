@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/admin-auth";
 import { getMercadoPagoClient } from "@/lib/mercadopago";
 import { Payment } from "mercadopago";
+import { PRICE } from "@/lib/constants";
 
 interface MPPayment {
   id?: number;
@@ -48,12 +49,14 @@ async function fetchAllPayments(from?: string, to?: string): Promise<MPPayment[]
     offset += limit;
   }
 
-  cachedPayments = { data: allPayments, fetchedAt: Date.now() };
+  // Only keep payments matching our product price
+  const gelatinPayments = allPayments.filter((p) => p.transaction_amount === PRICE);
+  cachedPayments = { data: gelatinPayments, fetchedAt: Date.now() };
 
   if (from || to) {
-    return filterByDate(allPayments, from, to);
+    return filterByDate(gelatinPayments, from, to);
   }
-  return allPayments;
+  return gelatinPayments;
 }
 
 function filterByDate(payments: MPPayment[], from?: string, to?: string): MPPayment[] {

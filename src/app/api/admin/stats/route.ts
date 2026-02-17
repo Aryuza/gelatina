@@ -3,6 +3,7 @@ import { requireAdmin } from "@/lib/admin-auth";
 import { getQuizEntries } from "@/lib/quiz-storage";
 import { getMercadoPagoClient } from "@/lib/mercadopago";
 import { Payment } from "mercadopago";
+import { PRICE } from "@/lib/constants";
 
 interface MPPayment {
   id?: number;
@@ -65,6 +66,8 @@ export async function GET(request: Request) {
           offset += limit;
         }
 
+        // Only keep payments matching our product price
+        allPayments = allPayments.filter((p) => p.transaction_amount === PRICE);
         cachedStats = { data: { payments: allPayments, key: cacheKey }, fetchedAt: Date.now() };
       } catch (e) {
         console.error("Error fetching MP payments for stats:", e);
