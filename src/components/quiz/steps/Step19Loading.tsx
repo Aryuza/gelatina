@@ -15,7 +15,9 @@ const LOADING_STEPS = [
 
 export default function Step19Loading() {
   const nextStep = useQuizStore((s) => s.nextStep);
-  const name = useQuizStore((s) => s.answers.name);
+  const answers = useQuizStore((s) => s.answers);
+  const bmiResult = useQuizStore((s) => s.bmiResult);
+  const name = answers.name;
   const [currentLoadingStep, setCurrentLoadingStep] = useState(0);
   const [progress, setProgress] = useState(0);
 
@@ -40,6 +42,13 @@ export default function Step19Loading() {
 
     const finishTimer = setTimeout(() => {
       trackQuizComplete();
+
+      fetch("/api/quiz-complete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ answers, bmiResult }),
+      }).catch(() => {});
+
       nextStep();
     }, totalDuration);
 
@@ -48,7 +57,7 @@ export default function Step19Loading() {
       clearInterval(stepTimer);
       clearTimeout(finishTimer);
     };
-  }, [nextStep]);
+  }, [nextStep, answers, bmiResult]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-8">

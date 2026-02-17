@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import type { QuizAnswers, BMIResult } from "@/store/types";
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -52,6 +53,144 @@ export async function sendDeliveryEmail(to: string, name: string) {
           
           <p style="font-size: 12px; color: #9ca3af; text-align: center;">
             &copy; ${new Date().getFullYear()} Gelatina Fit. Has recibido este correo porque realizaste una compra en nuestro sitio.
+          </p>
+        </div>
+      </div>
+    `,
+  };
+
+  return transporter.sendMail(mailOptions);
+}
+
+const LABEL_MAP: Record<string, Record<string, string>> = {
+  age: { "18-24": "18–24 años", "25-34": "25–34 años", "35-44": "35–44 años", "45-54": "45–54 años", "55+": "55+ años" },
+  bodyType: { "medio": "En forma", "acima-peso": "Unos kilos de más", "sobrepeso": "Sobrepeso", "plus-size": "Plus size" },
+  fatZones: { abdomen: "Abdomen", legs: "Piernas y muslos", arms: "Brazos", back: "Espalda", face: "Cara y papada", waist: "Cintura" },
+  weightImpact: { "limits-activities": "Me impide hacer cosas que disfruto", "self-esteem": "Afecta mi autoestima", "health-concern": "Me preocupa mi salud", clothing: "Me cuesta encontrar ropa que me quede bien" },
+  happyWithAppearance: { "no-want-change": "No, quiero cambiar", somewhat: "Más o menos, podría mejorar", "yes-but-better": "Sí, pero quiero sentirme mejor" },
+  barriers: { "food-anxiety": "Ansiedad por la comida", "no-time": "Falta de tiempo", "slow-metabolism": "Metabolismo lento", "no-motivation": "Falta de motivación", "boring-diets": "Dietas aburridas", "water-retention": "Retención de líquidos" },
+  goals: { "lose-weight": "Bajar de peso", "reduce-bloating": "Reducir hinchazón", digestion: "Mejorar digestión", "more-energy": "Más energía", confidence: "Sentirse más segura", skin: "Mejorar piel" },
+  pregnancies: { never: "Nunca", "1": "1 embarazo", "2": "2 embarazos", "3+": "3 o más" },
+  dailyRoutine: { sedentary: "Sedentaria", light: "Poco activa", moderate: "Moderadamente activa", active: "Muy activa" },
+  sleepHours: { "less-5": "Menos de 5h", "5-6": "5 a 6h", "7-8": "7 a 8h", "more-8": "Más de 8h" },
+  waterIntake: { "less-1l": "Menos de 1L", "1-2l": "1 a 2L", "2-3l": "2 a 3L", "more-3l": "Más de 3L" },
+};
+
+function getLabel(field: string, value: string): string {
+  return LABEL_MAP[field]?.[value] || value;
+}
+
+function getLabels(field: string, values: string[]): string {
+  return values.map((v) => getLabel(field, v)).join(", ");
+}
+
+export async function sendQuizCompletionNotification(
+  answers: QuizAnswers,
+  bmiResult: BMIResult | null
+) {
+  const now = new Date();
+  const fecha = now.toLocaleDateString("es-AR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
+
+  const mailOptions = {
+    from: `"Gelatina Fit" <${process.env.GMAIL_USER}>`,
+    to: process.env.GMAIL_USER,
+    subject: `📋 Quiz completado por ${answers.name || "Sin nombre"} - ${fecha}`,
+    html: `
+      <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e5e7eb; border-radius: 16px; overflow: hidden; background-color: #fff;">
+        <div style="background-color: #7c3aed; padding: 24px 20px; text-align: center; color: white;">
+          <h1 style="margin: 0; font-size: 22px;">Nuevo Quiz Completado</h1>
+          <p style="margin-top: 6px; font-size: 14px; opacity: 0.9;">${fecha}</p>
+        </div>
+
+        <div style="padding: 24px; color: #374151; line-height: 1.6; font-size: 14px;">
+          <h2 style="margin-top: 0; font-size: 18px; color: #7c3aed;">Datos de la persona</h2>
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr style="border-bottom: 1px solid #f3f4f6;">
+              <td style="padding: 8px 4px; font-weight: bold; width: 40%;">Nombre</td>
+              <td style="padding: 8px 4px;">${answers.name || "—"}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #f3f4f6;">
+              <td style="padding: 8px 4px; font-weight: bold;">Edad</td>
+              <td style="padding: 8px 4px;">${getLabel("age", answers.age)}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #f3f4f6;">
+              <td style="padding: 8px 4px; font-weight: bold;">Tipo de cuerpo</td>
+              <td style="padding: 8px 4px;">${getLabel("bodyType", answers.bodyType)}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #f3f4f6;">
+              <td style="padding: 8px 4px; font-weight: bold;">Zonas problemáticas</td>
+              <td style="padding: 8px 4px;">${getLabels("fatZones", answers.fatZones)}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #f3f4f6;">
+              <td style="padding: 8px 4px; font-weight: bold;">Impacto del peso</td>
+              <td style="padding: 8px 4px;">${getLabel("weightImpact", answers.weightImpact)}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #f3f4f6;">
+              <td style="padding: 8px 4px; font-weight: bold;">Feliz con su apariencia</td>
+              <td style="padding: 8px 4px;">${getLabel("happyWithAppearance", answers.happyWithAppearance)}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #f3f4f6;">
+              <td style="padding: 8px 4px; font-weight: bold;">Obstáculos</td>
+              <td style="padding: 8px 4px;">${getLabels("barriers", answers.barriers)}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #f3f4f6;">
+              <td style="padding: 8px 4px; font-weight: bold;">Objetivos</td>
+              <td style="padding: 8px 4px;">${getLabels("goals", answers.goals)}</td>
+            </tr>
+          </table>
+
+          <h2 style="margin-top: 24px; font-size: 18px; color: #7c3aed;">Datos físicos</h2>
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr style="border-bottom: 1px solid #f3f4f6;">
+              <td style="padding: 8px 4px; font-weight: bold; width: 40%;">Peso actual</td>
+              <td style="padding: 8px 4px;">${answers.currentWeight} kg</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #f3f4f6;">
+              <td style="padding: 8px 4px; font-weight: bold;">Altura</td>
+              <td style="padding: 8px 4px;">${answers.height} cm</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #f3f4f6;">
+              <td style="padding: 8px 4px; font-weight: bold;">Peso deseado</td>
+              <td style="padding: 8px 4px;">${answers.desiredWeight} kg</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #f3f4f6;">
+              <td style="padding: 8px 4px; font-weight: bold;">Embarazos</td>
+              <td style="padding: 8px 4px;">${getLabel("pregnancies", answers.pregnancies)}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #f3f4f6;">
+              <td style="padding: 8px 4px; font-weight: bold;">Rutina diaria</td>
+              <td style="padding: 8px 4px;">${getLabel("dailyRoutine", answers.dailyRoutine)}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #f3f4f6;">
+              <td style="padding: 8px 4px; font-weight: bold;">Horas de sueño</td>
+              <td style="padding: 8px 4px;">${getLabel("sleepHours", answers.sleepHours)}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #f3f4f6;">
+              <td style="padding: 8px 4px; font-weight: bold;">Consumo de agua</td>
+              <td style="padding: 8px 4px;">${getLabel("waterIntake", answers.waterIntake)}</td>
+            </tr>
+          </table>
+
+          ${bmiResult ? `
+          <h2 style="margin-top: 24px; font-size: 18px; color: #7c3aed;">Resultado BMI</h2>
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr style="border-bottom: 1px solid #f3f4f6;">
+              <td style="padding: 8px 4px; font-weight: bold; width: 40%;">IMC</td>
+              <td style="padding: 8px 4px;"><strong style="color: ${bmiResult.color};">${bmiResult.value}</strong> (${bmiResult.label})</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #f3f4f6;">
+              <td style="padding: 8px 4px; font-weight: bold;">Peso a perder</td>
+              <td style="padding: 8px 4px;">${bmiResult.weightToLose} kg</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #f3f4f6;">
+              <td style="padding: 8px 4px; font-weight: bold;">Tiempo estimado</td>
+              <td style="padding: 8px 4px;">${bmiResult.timeEstimate}</td>
+            </tr>
+          </table>
+          ` : ""}
+
+          <p style="font-size: 12px; color: #9ca3af; text-align: center; margin-top: 24px;">
+            Esta persona aún NO compró. Solo completó el cuestionario.
           </p>
         </div>
       </div>
