@@ -49,8 +49,9 @@ async function fetchAllPayments(from?: string, to?: string): Promise<MPPayment[]
     offset += limit;
   }
 
-  // Only keep payments matching our product price
-  const gelatinPayments = allPayments.filter((p) => p.transaction_amount === PRICE);
+  // Only keep payments matching our product prices (current + initial)
+  const VALID_PRICES = [PRICE, 3000];
+  const gelatinPayments = allPayments.filter((p) => VALID_PRICES.includes(p.transaction_amount || 0));
   cachedPayments = { data: gelatinPayments, fetchedAt: Date.now() };
 
   if (from || to) {

@@ -66,8 +66,9 @@ export async function GET(request: Request) {
           offset += limit;
         }
 
-        // Only keep payments matching our product price
-        allPayments = allPayments.filter((p) => p.transaction_amount === PRICE);
+        // Only keep payments matching our product prices (current + initial)
+        const VALID_PRICES = [PRICE, 3000];
+        allPayments = allPayments.filter((p) => VALID_PRICES.includes(p.transaction_amount || 0));
         cachedStats = { data: { payments: allPayments, key: cacheKey }, fetchedAt: Date.now() };
       } catch (e) {
         console.error("Error fetching MP payments for stats:", e);
