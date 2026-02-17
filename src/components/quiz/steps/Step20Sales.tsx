@@ -149,22 +149,6 @@ export default function Step20Sales() {
       {/* FAQ */}
       <FAQAccordion />
 
-      {/* Media proof - Infobae */}
-      <div className="space-y-3">
-        <p className="text-xs font-bold text-gray-400 uppercase tracking-widest text-center">
-          Visto en medios
-        </p>
-        <div className="rounded-2xl overflow-hidden border border-gray-200 shadow-md">
-          <Image
-            src="/images/infobae-nota.png"
-            alt="Nota de Infobae sobre Gelatina Fit"
-            width={400}
-            height={500}
-            className="w-full h-auto"
-          />
-        </div>
-      </div>
-
       {/* Final CTA */}
       <div className="text-center space-y-3">
         <p className="text-sm text-gray-500">
