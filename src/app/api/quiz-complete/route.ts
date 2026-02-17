@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { sendQuizCompletionNotification } from "@/lib/email";
+import { appendQuizEntry } from "@/lib/quiz-storage";
 
 export async function POST(req: Request) {
   try {
@@ -10,6 +11,13 @@ export async function POST(req: Request) {
         { error: "Missing quiz answers" },
         { status: 400 }
       );
+    }
+
+    // Persist quiz entry for admin dashboard
+    try {
+      appendQuizEntry(answers, bmiResult);
+    } catch (e) {
+      console.error("Failed to persist quiz entry:", e);
     }
 
     await sendQuizCompletionNotification(answers, bmiResult, personalizedTips);
