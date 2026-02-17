@@ -3,7 +3,7 @@ import { sendQuizCompletionNotification } from "@/lib/email";
 
 export async function POST(req: Request) {
   try {
-    const { answers, bmiResult } = await req.json();
+    const { answers, bmiResult, personalizedTips } = await req.json();
 
     if (!answers) {
       return NextResponse.json(
@@ -12,7 +12,7 @@ export async function POST(req: Request) {
       );
     }
 
-    await sendQuizCompletionNotification(answers, bmiResult);
+    await sendQuizCompletionNotification(answers, bmiResult, personalizedTips);
 
     return NextResponse.json({ success: true });
   } catch (error) {

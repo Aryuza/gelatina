@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer";
-import type { QuizAnswers, BMIResult } from "@/store/types";
+import type { QuizAnswers, BMIResult, PersonalizedTips } from "@/store/types";
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -86,7 +86,8 @@ function getLabels(field: string, values: string[]): string {
 
 export async function sendQuizCompletionNotification(
   answers: QuizAnswers,
-  bmiResult: BMIResult | null
+  bmiResult: BMIResult | null,
+  personalizedTips?: PersonalizedTips | null
 ) {
   const now = new Date();
   const fecha = now.toLocaleDateString("es-AR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
@@ -187,6 +188,25 @@ export async function sendQuizCompletionNotification(
               <td style="padding: 8px 4px;">${bmiResult.timeEstimate}</td>
             </tr>
           </table>
+          ` : ""}
+
+          ${personalizedTips ? `
+          <h2 style="margin-top: 24px; font-size: 18px; color: #7c3aed;">Respuesta de IA (lo que vio la persona)</h2>
+          <div style="background-color: #faf5ff; padding: 16px; border-radius: 12px; border: 1px solid #e9d5ff; margin-top: 8px;">
+            <p style="margin: 0 0 8px 0; font-weight: bold; color: #6d28d9;">Saludo:</p>
+            <p style="margin: 0 0 12px 0; font-size: 14px;">${personalizedTips.greeting}</p>
+
+            <p style="margin: 0 0 8px 0; font-weight: bold; color: #6d28d9;">Diagnóstico:</p>
+            <p style="margin: 0 0 12px 0; font-size: 14px;">${personalizedTips.analysis}</p>
+
+            <p style="margin: 0 0 8px 0; font-weight: bold; color: #6d28d9;">Recomendaciones:</p>
+            <ul style="padding-left: 16px; margin: 0 0 12px 0;">
+              ${personalizedTips.tips.map((t) => `<li style="margin-bottom: 6px; font-size: 14px;">${t.icon} <strong>${t.title}</strong>: ${t.description}</li>`).join("")}
+            </ul>
+
+            <p style="margin: 0 0 8px 0; font-weight: bold; color: #6d28d9;">Motivación:</p>
+            <p style="margin: 0; font-size: 14px; font-style: italic;">${personalizedTips.motivation}</p>
+          </div>
           ` : ""}
 
           <p style="font-size: 12px; color: #9ca3af; text-align: center; margin-top: 24px;">

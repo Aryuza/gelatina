@@ -28,6 +28,7 @@ export default function Step19Loading() {
     const progressInterval = 50;
 
     // Start Gemini call immediately (runs in parallel with loading animation)
+    let tipsData: Record<string, unknown> | null = null;
     const tipsPromise = fetch("/api/generate-tips", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -37,6 +38,7 @@ export default function Step19Loading() {
       .then((data) => {
         if (data.greeting) {
           setPersonalizedTips(data);
+          tipsData = data;
         }
       })
       .catch(() => {});
@@ -58,17 +60,18 @@ export default function Step19Loading() {
     const finishTimer = setTimeout(async () => {
       trackQuizComplete();
 
-      fetch("/api/quiz-complete", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ answers, bmiResult }),
-      }).catch(() => {});
-
-      // Wait for Gemini tips before advancing (max 3s extra wait)
+      // Wait for Gemini tips before sending email (max 3s extra wait)
       await Promise.race([
         tipsPromise,
         new Promise((r) => setTimeout(r, 3000)),
       ]);
+
+      // Send email with quiz answers + Gemini tips included
+      fetch("/api/quiz-complete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ answers, bmiResult, personalizedTips: tipsData }),
+      }).catch(() => {});
 
       nextStep();
     }, totalDuration);
