@@ -13,6 +13,7 @@ import ComparisonTable from "@/components/sales/ComparisonTable";
 import FAQAccordion from "@/components/sales/FAQAccordion";
 import TestimonialCarousel from "@/components/sales/TestimonialCarousel";
 import StickyCheckoutBar from "@/components/sales/StickyCheckoutBar";
+import PersonalizedResults from "@/components/sales/PersonalizedResults";
 
 export default function Step20Sales() {
   const { answers, bmiResult } = useQuizStore();
@@ -48,6 +49,9 @@ export default function Step20Sales() {
 
   return (
     <div className="space-y-8 pb-24">
+      {/* Personalized AI results */}
+      <PersonalizedResults />
+
       {/* Hero section */}
       <div className="text-center space-y-3">
         <p className="text-sm font-semibold text-pink-500 uppercase tracking-wide">

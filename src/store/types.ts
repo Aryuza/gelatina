@@ -16,6 +16,19 @@ export interface QuizAnswers {
   waterIntake: string;
 }
 
+export interface PersonalizedTip {
+  icon: string;
+  title: string;
+  description: string;
+}
+
+export interface PersonalizedTips {
+  greeting: string;
+  analysis: string;
+  tips: PersonalizedTip[];
+  motivation: string;
+}
+
 export interface BMIResult {
   value: number;
   category: "bajo" | "normal" | "sobrepeso" | "obesidad1" | "obesidad2" | "obesidad3";
@@ -30,6 +43,7 @@ export interface QuizState {
   currentStep: number;
   answers: QuizAnswers;
   bmiResult: BMIResult | null;
+  personalizedTips: PersonalizedTips | null;
   quizStartedAt: number | null;
 
   nextStep: () => void;
@@ -37,5 +51,6 @@ export interface QuizState {
   updateAnswer: <K extends keyof QuizAnswers>(key: K, value: QuizAnswers[K]) => void;
   toggleArrayAnswer: (key: "fatZones" | "barriers" | "goals", value: string) => void;
   calculateBMI: () => void;
+  setPersonalizedTips: (tips: PersonalizedTips) => void;
   resetQuiz: () => void;
 }

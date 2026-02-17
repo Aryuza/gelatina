@@ -17,6 +17,7 @@ export default function Step19Loading() {
   const nextStep = useQuizStore((s) => s.nextStep);
   const answers = useQuizStore((s) => s.answers);
   const bmiResult = useQuizStore((s) => s.bmiResult);
+  const setPersonalizedTips = useQuizStore((s) => s.setPersonalizedTips);
   const name = answers.name;
   const [currentLoadingStep, setCurrentLoadingStep] = useState(0);
   const [progress, setProgress] = useState(0);
@@ -25,6 +26,20 @@ export default function Step19Loading() {
     const stepDuration = 1000;
     const totalDuration = LOADING_STEPS.length * stepDuration;
     const progressInterval = 50;
+
+    // Start Gemini call immediately (runs in parallel with loading animation)
+    const tipsPromise = fetch("/api/generate-tips", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ answers, bmiResult }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.greeting) {
+          setPersonalizedTips(data);
+        }
+      })
+      .catch(() => {});
 
     const progressTimer = setInterval(() => {
       setProgress((prev) => {
@@ -40,7 +55,7 @@ export default function Step19Loading() {
       });
     }, stepDuration);
 
-    const finishTimer = setTimeout(() => {
+    const finishTimer = setTimeout(async () => {
       trackQuizComplete();
 
       fetch("/api/quiz-complete", {
@@ -48,6 +63,12 @@ export default function Step19Loading() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ answers, bmiResult }),
       }).catch(() => {});
+
+      // Wait for Gemini tips before advancing (max 3s extra wait)
+      await Promise.race([
+        tipsPromise,
+        new Promise((r) => setTimeout(r, 3000)),
+      ]);
 
       nextStep();
     }, totalDuration);
@@ -57,7 +78,7 @@ export default function Step19Loading() {
       clearInterval(stepTimer);
       clearTimeout(finishTimer);
     };
-  }, [nextStep, answers, bmiResult]);
+  }, [nextStep, answers, bmiResult, setPersonalizedTips]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-8">
