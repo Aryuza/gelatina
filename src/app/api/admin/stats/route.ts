@@ -4,6 +4,7 @@ import { getQuizEntries } from "@/lib/quiz-storage";
 import { getMercadoPagoClient } from "@/lib/mercadopago";
 import { Payment } from "mercadopago";
 import { PRICE } from "@/lib/constants";
+import { ageToRange } from "@/lib/label-map";
 
 interface MPPayment {
   id?: number;
@@ -28,7 +29,7 @@ export async function GET(request: Request) {
     const to = url.searchParams.get("to") || undefined;
 
     // Get quizzes
-    let quizzes = getQuizEntries();
+    let quizzes = await getQuizEntries();
     if (from) {
       const fromDate = new Date(from);
       quizzes = quizzes.filter((q) => new Date(q.timestamp) >= fromDate);
@@ -123,7 +124,10 @@ export async function GET(request: Request) {
 
     for (const q of quizzes) {
       const a = q.answers;
-      if (a.age) patterns.age[a.age] = (patterns.age[a.age] || 0) + 1;
+      if (a.age) {
+        const ageKey = ageToRange(a.age);
+        patterns.age[ageKey] = (patterns.age[ageKey] || 0) + 1;
+      }
       if (a.bodyType) patterns.bodyType[a.bodyType] = (patterns.bodyType[a.bodyType] || 0) + 1;
       if (a.dailyRoutine) patterns.dailyRoutine[a.dailyRoutine] = (patterns.dailyRoutine[a.dailyRoutine] || 0) + 1;
       if (a.waterIntake) patterns.waterIntake[a.waterIntake] = (patterns.waterIntake[a.waterIntake] || 0) + 1;

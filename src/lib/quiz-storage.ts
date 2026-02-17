@@ -1,9 +1,5 @@
-import fs from "fs";
-import path from "path";
+import { supabase } from "@/lib/supabase";
 import type { QuizAnswers, BMIResult } from "@/store/types";
-
-const DATA_FILE = path.join("/tmp", "quiz-data.json");
-const MAX_ENTRIES = 500;
 
 export interface QuizEntry {
   id: string;
@@ -12,39 +8,38 @@ export interface QuizEntry {
   bmiResult: BMIResult | null;
 }
 
-function readEntries(): QuizEntry[] {
-  try {
-    if (fs.existsSync(DATA_FILE)) {
-      const raw = fs.readFileSync(DATA_FILE, "utf-8");
-      return JSON.parse(raw);
-    }
-  } catch {
-    // corrupted file, start fresh
-  }
-  return [];
-}
-
-function writeEntries(entries: QuizEntry[]): void {
-  fs.writeFileSync(DATA_FILE, JSON.stringify(entries), "utf-8");
-}
-
-export function appendQuizEntry(answers: QuizAnswers, bmiResult: BMIResult | null): QuizEntry {
-  const entries = readEntries();
-  const entry: QuizEntry = {
+export async function appendQuizEntry(answers: QuizAnswers, bmiResult: BMIResult | null): Promise<QuizEntry> {
+  const entry = {
     id: `q_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
     timestamp: new Date().toISOString(),
     answers,
-    bmiResult,
+    bmi_result: bmiResult,
   };
-  entries.push(entry);
-  // FIFO: keep only the last MAX_ENTRIES
-  if (entries.length > MAX_ENTRIES) {
-    entries.splice(0, entries.length - MAX_ENTRIES);
+
+  const { error } = await supabase.from("quiz_entries").insert(entry);
+  if (error) {
+    console.error("Failed to insert quiz entry:", error);
+    throw error;
   }
-  writeEntries(entries);
-  return entry;
+
+  return { id: entry.id, timestamp: entry.timestamp, answers, bmiResult };
 }
 
-export function getQuizEntries(): QuizEntry[] {
-  return readEntries();
+export async function getQuizEntries(): Promise<QuizEntry[]> {
+  const { data, error } = await supabase
+    .from("quiz_entries")
+    .select("*")
+    .order("timestamp", { ascending: true });
+
+  if (error) {
+    console.error("Failed to fetch quiz entries:", error);
+    return [];
+  }
+
+  return (data || []).map((row) => ({
+    id: row.id,
+    timestamp: row.timestamp,
+    answers: row.answers,
+    bmiResult: row.bmi_result,
+  }));
 }

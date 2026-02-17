@@ -12,7 +12,19 @@ export const LABEL_MAP: Record<string, Record<string, string>> = {
   waterIntake: { "less-1l": "Menos de 1L", "1-2l": "1 a 2L", "2-3l": "2 a 3L", "more-3l": "Más de 3L" },
 };
 
+export function ageToRange(age: string): string {
+  const n = parseInt(age);
+  if (isNaN(n)) return age;
+  if (n < 25) return "18-24";
+  if (n < 35) return "25-34";
+  if (n < 45) return "35-44";
+  if (n < 55) return "45-54";
+  return "55+";
+}
+
 export function getLabel(field: string, value: string): string {
+  // If age is an exact number, show "X años"
+  if (field === "age" && /^\d+$/.test(value)) return `${value} años`;
   return LABEL_MAP[field]?.[value] || value;
 }
 

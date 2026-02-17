@@ -14,7 +14,7 @@ export async function GET(request: Request) {
   const from = url.searchParams.get("from") || "";
   const to = url.searchParams.get("to") || "";
 
-  let entries = getQuizEntries().reverse(); // newest first
+  let entries = (await getQuizEntries()).reverse(); // newest first
 
   // Filter by date range
   if (from) {

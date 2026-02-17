@@ -15,7 +15,7 @@ export async function POST(req: Request) {
 
     // Persist quiz entry for admin dashboard
     try {
-      appendQuizEntry(answers, bmiResult);
+      await appendQuizEntry(answers, bmiResult);
     } catch (e) {
       console.error("Failed to persist quiz entry:", e);
     }

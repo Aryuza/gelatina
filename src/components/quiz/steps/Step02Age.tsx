@@ -6,20 +6,12 @@ import { trackStepComplete } from "@/lib/analytics";
 import SliderInput from "@/components/ui/SliderInput";
 import Button from "@/components/ui/Button";
 
-function ageToRange(age: number): string {
-  if (age < 25) return "18-24";
-  if (age < 35) return "25-34";
-  if (age < 45) return "35-44";
-  if (age < 55) return "45-54";
-  return "55+";
-}
-
 export default function Step02Age() {
   const { answers, updateAnswer, nextStep } = useQuizStore();
   const [age, setAge] = useState(30);
 
   const handleContinue = () => {
-    updateAnswer("age", ageToRange(age));
+    updateAnswer("age", String(age));
     trackStepComplete(2, "age");
     nextStep();
   };
