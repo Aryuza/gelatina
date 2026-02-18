@@ -3,6 +3,9 @@ import { Payment } from "mercadopago";
 import { getMercadoPagoClient } from "@/lib/mercadopago";
 import { sendDeliveryEmail } from "@/lib/email";
 
+// Track processed payment IDs to avoid duplicate emails
+const processedPayments = new Set<string>();
+
 export async function POST(request: NextRequest) {
     try {
         const searchParams = request.nextUrl.searchParams;
@@ -20,10 +23,18 @@ export async function POST(request: NextRequest) {
                 return NextResponse.json({ message: "No payment ID found" }, { status: 200 });
             }
 
+            const pid = String(paymentId);
+
+            // Skip if already processed
+            if (processedPayments.has(pid)) {
+                console.log("Webhook: Payment already processed, skipping:", pid);
+                return NextResponse.json({ received: true, duplicate: true }, { status: 200 });
+            }
+
             const client = getMercadoPagoClient();
             const payment = new Payment(client);
 
-            const result = await payment.get({ id: String(paymentId) });
+            const result = await payment.get({ id: pid });
 
             console.log("Webhook Payment Status:", result.status, result.status_detail);
 
@@ -31,6 +42,8 @@ export async function POST(request: NextRequest) {
             const firstName = result.payer?.first_name || result.payer?.email?.split('@')[0] || "Cliente";
 
             if ((result.status === "approved" || result.status === "authorized") && email) {
+                // Mark as processed BEFORE sending to prevent race conditions
+                processedPayments.add(pid);
                 console.log("Webhook: Payment approved. Sending email to:", email);
                 await sendDeliveryEmail(email, firstName);
             }

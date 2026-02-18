@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Payment } from "mercadopago";
 import { getMercadoPagoClient } from "@/lib/mercadopago";
-import { sendDeliveryEmail } from "@/lib/email";
 
 export async function GET(request: NextRequest) {
     try {
@@ -15,21 +14,16 @@ export async function GET(request: NextRequest) {
         const client = getMercadoPagoClient();
         const payment = new Payment(client);
 
-        // Fetch payment details from Mercado Pago
         console.log("Verifying payment with ID:", paymentId);
         const result = await payment.get({ id: paymentId });
 
-        // Log the whole status for debugging
         console.log("MP Payment Status:", result.status, result.status_detail);
 
         const email = result.payer?.email;
         const firstName = result.payer?.first_name || result.payer?.email?.split('@')[0] || "Cliente";
 
-        if ((result.status === "approved" || result.status === "authorized") && email) {
-            console.log("Payment approved. Sending email to:", email);
-            // Trigger delivery email
-            await sendDeliveryEmail(email, firstName);
-
+        if (result.status === "approved" || result.status === "authorized") {
+            // Email is sent by the webhook, not here — avoids duplicates
             return NextResponse.json({
                 success: true,
                 email,
