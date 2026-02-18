@@ -111,3 +111,33 @@ input[type="range"]::-moz-range-thumb {
 .sticky-shadow {
   box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
 }
+
+/* Shimmer sweep across button */
+@keyframes shimmer {
+  0% { transform: translateX(-150%) skewX(-12deg); }
+  100% { transform: translateX(250%) skewX(-12deg); }
+}
+
+.animate-shimmer {
+  animation: shimmer 2.2s ease-in-out infinite;
+}
+
+/* Arrow nudge right */
+@keyframes nudge-right {
+  0%, 100% { transform: translateX(0px); }
+  50% { transform: translateX(5px); }
+}
+
+.animate-nudge {
+  animation: nudge-right 0.9s ease-in-out infinite;
+}
+
+/* Gentle scale breathe */
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.025); }
+}
+
+.animate-breathe {
+  animation: breathe 2s ease-in-out infinite;
+}

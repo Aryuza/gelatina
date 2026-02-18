@@ -13,9 +13,71 @@ import GuaranteeSection from "@/components/sales/GuaranteeSection";
 import ComparisonTable from "@/components/sales/ComparisonTable";
 import FAQAccordion from "@/components/sales/FAQAccordion";
 import TestimonialCarousel from "@/components/sales/TestimonialCarousel";
-import StickyCheckoutBar from "@/components/sales/StickyCheckoutBar";
+
 import PersonalizedResults from "@/components/sales/PersonalizedResults";
 import LivePurchaseToast from "@/components/sales/LivePurchaseToast";
+
+function scrollToPricing() {
+  const el = document.getElementById("plan-acelerado");
+  if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+interface CtaButtonProps {
+  label: string;
+  sublabel?: string;
+  onClick: () => void;
+  loading?: boolean;
+  variant?: "primary" | "secondary";
+}
+
+function CtaButton({ label, sublabel, onClick, loading, variant = "primary" }: CtaButtonProps) {
+  // Split label to animate the trailing arrow separately
+  const hasArrow = label.endsWith("→");
+  const labelText = hasArrow ? label.slice(0, -1).trimEnd() : label;
+
+  if (variant === "secondary") {
+    return (
+      <div className="animate-breathe">
+        <button
+          onClick={onClick}
+          disabled={loading}
+          className="w-full relative overflow-hidden border-2 border-pink-500 text-pink-600 font-bold py-3.5 rounded-2xl hover:bg-pink-50 active:scale-[0.97] transition-all text-base disabled:opacity-50"
+        >
+          <span className="relative z-10 flex items-center justify-center gap-1.5">
+            <span>{labelText}</span>
+            {hasArrow && <span className="animate-nudge inline-block">→</span>}
+          </span>
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="animate-breathe">
+      <button
+        onClick={onClick}
+        disabled={loading}
+        className="w-full relative overflow-hidden bg-gradient-to-r from-pink-500 to-pink-600 text-white font-bold py-4 rounded-2xl shadow-lg shadow-pink-500/40 hover:from-pink-600 hover:to-pink-700 active:scale-[0.97] transition-all text-base disabled:opacity-50 animate-pulse-pink"
+      >
+        {/* Shimmer sweep */}
+        <span
+          aria-hidden="true"
+          className="animate-shimmer absolute inset-0 w-1/3 bg-gradient-to-r from-transparent via-white/25 to-transparent pointer-events-none"
+        />
+        {/* Label */}
+        <span className="relative z-10 flex flex-col items-center">
+          <span className="flex items-center gap-1.5">
+            <span>{labelText}</span>
+            {hasArrow && <span className="animate-nudge inline-block">→</span>}
+          </span>
+          {sublabel && (
+            <span className="text-xs font-normal opacity-80 mt-0.5">{sublabel}</span>
+          )}
+        </span>
+      </button>
+    </div>
+  );
+}
 
 export default function Step20Sales() {
   const { answers, bmiResult } = useQuizStore();
@@ -77,6 +139,13 @@ export default function Step20Sales() {
       {/* Countdown */}
       <CountdownTimer />
 
+      {/* CTA #1 — después del countdown, momentum de urgencia */}
+      <CtaButton
+        label="Quiero mi plan personalizado →"
+        sublabel="Acceso inmediato · Garantía 30 días"
+        onClick={scrollToPricing}
+      />
+
       {/* Product showcase */}
       <div className="bg-white rounded-2xl p-5 border border-pink-100 space-y-4">
         <div className="flex items-center gap-4">
@@ -135,14 +204,42 @@ export default function Step20Sales() {
         </div>
       </div>
 
+      {/* CTA #2 — después de "cómo funciona", la curiosidad está alta */}
+      <CtaButton
+        label="Empezar mi transformación →"
+        sublabel="Solo por hoy · $3.900 ARS"
+        onClick={scrollToPricing}
+      />
+
       {/* Testimonials */}
       <TestimonialCarousel />
+
+      {/* CTA #3 — después de testimonios, prueba social fresca */}
+      <CtaButton
+        label="Yo también quiero estos resultados →"
+        onClick={scrollToPricing}
+      />
 
       {/* Comparison */}
       <ComparisonTable />
 
+      {/* CTA #4 — después de la comparación, lógica racional consolidada */}
+      <CtaButton
+        label="Obtener mi plan ahora →"
+        sublabel="Pago único · Sin suscripción"
+        onClick={scrollToPricing}
+        variant="secondary"
+      />
+
       {/* Bonuses */}
       <BonusSection />
+
+      {/* CTA #5 — después de los bonuses, máximo valor percibido */}
+      <CtaButton
+        label="Quiero todo esto por $3.900 →"
+        sublabel="+ Garantía de devolución 30 días"
+        onClick={scrollToPricing}
+      />
 
       {/* Pricing */}
       <PricingCard onCheckout={handleCheckout} loading={loading} />
@@ -198,26 +295,44 @@ export default function Step20Sales() {
         </p>
       </div>
 
+      {/* CTA #6 — después de ver todos los entregables, el valor es máximo */}
+      <CtaButton
+        label="Recibir todo esto ahora →"
+        sublabel="Acceso inmediato al comprar"
+        onClick={() => handleCheckout("acelerado")}
+        loading={loading}
+      />
+
       {/* Guarantee */}
       <GuaranteeSection />
+
+      {/* CTA #7 — después de la garantía, el miedo al riesgo desapareció */}
+      <CtaButton
+        label="Comprar sin riesgo →"
+        sublabel="30 días de garantía · Devolución total"
+        onClick={() => handleCheckout("acelerado")}
+        loading={loading}
+      />
 
       {/* FAQ */}
       <FAQAccordion />
 
+      {/* CTA #8 — cierre final, las dudas están resueltas */}
+      <CtaButton
+        label="Sí, quiero mi plan personalizado →"
+        sublabel="$3.900 ARS · Pago único · Sin suscripción"
+        onClick={() => handleCheckout("acelerado")}
+        loading={loading}
+      />
+
       {/* Final CTA */}
       <div className="text-center space-y-3">
-        <p className="text-sm text-gray-500">
-          ¿Tenés dudas? Escribinos y te ayudamos
-        </p>
         <p className="text-xs text-gray-400">
           Al comprar aceptás nuestros{" "}
           <a href="/terminos" className="underline">términos</a> y{" "}
           <a href="/privacidad" className="underline">política de privacidad</a>
         </p>
       </div>
-
-      {/* Sticky bottom bar */}
-      <StickyCheckoutBar onCheckout={() => handleCheckout("acelerado")} loading={loading} />
 
       {/* Live purchase notifications */}
       <LivePurchaseToast />

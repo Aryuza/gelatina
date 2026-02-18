@@ -24,7 +24,7 @@ export default function CountdownTimer() {
         {formatted}
       </p>
       <p className="text-xs opacity-80 mt-1">
-        Después de este tiempo, el precio vuelve a $9.999
+        Después de este tiempo, el precio vuelve a $12.000
       </p>
     </div>
   );
