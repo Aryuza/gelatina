@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Preference } from "mercadopago";
 import { getMercadoPagoClient } from "@/lib/mercadopago";
-import { PRODUCT_NAME, PRICE, TEA_NAME, COMBO_PRICE } from "@/lib/constants";
+import { PRODUCT_NAME, PRICE, COMBO_PRICE } from "@/lib/constants";
 
 export async function POST(request: NextRequest) {
   try {
@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
     const isAccelerated = plan === "acelerado";
     const finalPrice = isAccelerated ? COMBO_PRICE : PRICE;
     const title = isAccelerated
-      ? `${PRODUCT_NAME} + ${TEA_NAME} - Plan Acelerado${name ? ` para ${name}` : ""}`
+      ? `${PRODUCT_NAME} - Plan Acelerado${name ? ` para ${name}` : ""}`
       : `${PRODUCT_NAME} - Plan Personalizado${name ? ` para ${name}` : ""}`;
 
     const client = getMercadoPagoClient();
