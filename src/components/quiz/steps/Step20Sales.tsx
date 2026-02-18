@@ -336,7 +336,26 @@ export default function Step20Sales() {
         <DeliveryBadge />
       </div>
 
-      {/* 16. SCARCITY — cupos limitados */}
+      {/* 16. VIDEO PRUEBA DEL PRODUCTO */}
+      <div className="space-y-3">
+        <div className="text-center space-y-1">
+          <p className="text-xs font-bold text-pink-500 uppercase tracking-wide">Mirá antes de comprar</p>
+          <h3 className="text-xl font-bold text-gray-900">Esto es lo que recibís al instante</h3>
+          <p className="text-sm text-gray-500">Grabación real de la página de entrega</p>
+        </div>
+        <div className="flex justify-center">
+          <video
+            src="/videos/entregables.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="w-2/3 rounded-2xl border border-pink-100 shadow-md"
+          />
+        </div>
+      </div>
+
+      {/* 17. SCARCITY — cupos limitados */}
       <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-start gap-3">
         <span className="text-xl shrink-0">⚠️</span>
         <div>
@@ -347,7 +366,7 @@ export default function Step20Sales() {
         </div>
       </div>
 
-      {/* 17. PRICING CARD — precio aparece con el máximo valor acumulado */}
+      {/* 18. PRICING CARD — precio aparece con el máximo valor acumulado */}
       <PricingCard onCheckout={handleCheckout} loading={loading} />
 
       {/* 18. GUARANTEE */}
