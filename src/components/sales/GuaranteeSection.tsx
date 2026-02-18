@@ -10,9 +10,9 @@ export default function GuaranteeSection() {
         Garantía de Satisfacción 30 Días
       </h3>
       <p className="text-sm text-gray-600 leading-relaxed">
-        Si no ves resultados en los primeros 30 días, te devolvemos el{" "}
-        <strong>100% de tu dinero</strong>. Sin preguntas, sin letra chica.
-        Tu satisfacción es nuestra prioridad.
+        Tenés <strong>30 días para probarlo</strong>. Si por cualquier razón
+        no estás satisfecha, te devolvemos el <strong>100% de tu dinero</strong>.
+        Sin preguntas, sin letra chica, sin vueltas.
       </p>
     </div>
   );

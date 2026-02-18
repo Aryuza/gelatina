@@ -209,9 +209,14 @@ export const TESTIMONIALS = [
 
 export const FAQ_ITEMS = [
   {
+    question: "¿Cuándo recibo mi plan?",
+    answer:
+      "Inmediatamente después de confirmar el pago. Te llega un email con acceso a todos tus recursos: el plan personalizado, el Té Mounjaro Japonés y todos los bonuses. Sin esperas, sin envíos.",
+  },
+  {
     question: "¿Qué es exactamente la Gelatina Fit?",
     answer:
-      "Es un suplemento nutricional en formato gelatina, formulado con colágeno hidrolizado, fibras naturales y extractos que ayudan a controlar el apetito, mejorar la digestión y acelerar el metabolismo. Tiene gusto rico y es súper fácil de preparar.",
+      "Es un plan nutricional digital personalizado según tus respuestas del quiz, formulado con colágeno hidrolizado, fibras naturales y extractos que ayudan a controlar el apetito, mejorar la digestión y acelerar el metabolismo. Recibís todo en formato digital por email.",
   },
   {
     question: "¿Cómo se prepara?",
@@ -234,11 +239,6 @@ export const FAQ_ITEMS = [
       "Te recomendamos consultar con tu médico antes de comenzar cualquier suplemento durante la lactancia.",
   },
   {
-    question: "¿Cómo llega el producto?",
-    answer:
-      "Después de tu compra, recibís acceso inmediato a tu plan personalizado y las instrucciones de preparación por email. El producto físico se envía a todo el país.",
-  },
-  {
     question: "¿Qué métodos de pago aceptan?",
     answer:
       "Aceptamos todos los métodos de pago a través de MercadoPago: tarjeta de crédito, débito, transferencia bancaria, y efectivo en puntos de pago.",
@@ -246,7 +246,7 @@ export const FAQ_ITEMS = [
   {
     question: "¿Tiene garantía?",
     answer:
-      "Sí, ofrecemos garantía de satisfacción de 30 días. Si no estás conforme con los resultados, te devolvemos el 100% de tu dinero sin preguntas.",
+      "Sí. Tenés 30 días para probarlo. Si por cualquier razón no estás satisfecha, te devolvemos el 100% de tu dinero sin preguntas y sin letra chica.",
   },
 ];
 

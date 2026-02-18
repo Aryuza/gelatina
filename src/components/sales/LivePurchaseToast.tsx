@@ -65,13 +65,13 @@ export default function LivePurchaseToast() {
           : "translate-y-4 opacity-0 pointer-events-none"
       }`}
     >
-      <div className="bg-white rounded-xl shadow-lg border border-gray-100 px-3.5 py-2.5 flex items-center gap-2.5 max-w-[260px]">
+      <div className="bg-white rounded-xl shadow-lg border border-gray-100 px-3.5 py-2.5 flex items-center gap-2.5 max-w-[270px]">
         <span className="text-lg shrink-0">🛒</span>
         <div>
           <p className="text-xs text-gray-800 font-semibold leading-tight">
             {toast.name} de {toast.city}
           </p>
-          <p className="text-[10px] text-gray-400">{toast.time}</p>
+          <p className="text-[10px] text-gray-500">acaba de obtener su plan · {toast.time}</p>
         </div>
       </div>
     </div>
