@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { ALL_DELIVERABLES } from "@/lib/constants";
 import { useQuizStore } from "@/store/quizStore";
 import { trackBeginCheckout } from "@/lib/analytics";
-import { PRODUCT_NAME, PRICE, NUTRITIONIST, NUTRITIONIST_LICENSE } from "@/lib/constants";
+import { PRODUCT_NAME, PRICE, COMBO_PRICE, NUTRITIONIST, NUTRITIONIST_LICENSE } from "@/lib/constants";
 import CountdownTimer from "@/components/sales/CountdownTimer";
 import PricingCard from "@/components/sales/PricingCard";
 import BonusSection from "@/components/sales/BonusSection";
@@ -14,14 +15,16 @@ import FAQAccordion from "@/components/sales/FAQAccordion";
 import TestimonialCarousel from "@/components/sales/TestimonialCarousel";
 import StickyCheckoutBar from "@/components/sales/StickyCheckoutBar";
 import PersonalizedResults from "@/components/sales/PersonalizedResults";
+import LivePurchaseToast from "@/components/sales/LivePurchaseToast";
 
 export default function Step20Sales() {
   const { answers, bmiResult } = useQuizStore();
   const [loading, setLoading] = useState(false);
 
-  const handleCheckout = async () => {
+  const handleCheckout = async (plan: "basico" | "acelerado" = "acelerado") => {
     setLoading(true);
-    trackBeginCheckout(PRICE);
+    const price = plan === "acelerado" ? COMBO_PRICE : PRICE;
+    trackBeginCheckout(price);
 
     try {
       const res = await fetch("/api/checkout", {
@@ -30,6 +33,7 @@ export default function Step20Sales() {
         body: JSON.stringify({
           name: answers.name,
           email: "",
+          plan,
         }),
       });
 
@@ -143,6 +147,57 @@ export default function Step20Sales() {
       {/* Pricing */}
       <PricingCard onCheckout={handleCheckout} loading={loading} />
 
+      {/* What you receive */}
+      <div className="space-y-5">
+        <div className="text-center space-y-1">
+          <h3 className="text-xl font-extrabold text-gray-900">
+            Esto es todo lo que vas a recibir
+          </h3>
+          <p className="text-sm text-gray-500">Acceso inmediato después de tu compra</p>
+        </div>
+
+        <div className="space-y-2">
+          {ALL_DELIVERABLES.map((item) => (
+            <div
+              key={item.name}
+              className={`flex items-center gap-3 rounded-xl p-2.5 ${
+                item.highlighted
+                  ? "bg-gradient-to-r from-pink-100 to-pink-50 border-2 border-pink-500 shadow-md shadow-pink-500/10"
+                  : item.main
+                  ? "bg-gradient-to-r from-pink-50 to-white border-2 border-pink-400"
+                  : "bg-white border border-gray-100"
+              }`}
+            >
+              <Image
+                src={item.image}
+                alt={item.name}
+                width={44}
+                height={56}
+                className="w-11 h-14 object-cover rounded-md shrink-0 shadow-sm"
+              />
+              <div className="flex-1 min-w-0">
+                <p className={`font-semibold text-sm leading-tight ${
+                  item.highlighted ? "text-pink-700" : item.main ? "text-gray-900 font-bold" : "text-gray-800"
+                }`}>
+                  {item.name}
+                </p>
+              </div>
+              {item.highlighted ? (
+                <span className="bg-pink-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full uppercase shrink-0">
+                  Premium
+                </span>
+              ) : (
+                <span className="text-green-500 shrink-0 text-sm">✓</span>
+              )}
+            </div>
+          ))}
+        </div>
+
+        <p className="text-center text-xs text-gray-400">
+          Son {ALL_DELIVERABLES.length} recursos que recibís de forma inmediata
+        </p>
+      </div>
+
       {/* Guarantee */}
       <GuaranteeSection />
 
@@ -162,7 +217,10 @@ export default function Step20Sales() {
       </div>
 
       {/* Sticky bottom bar */}
-      <StickyCheckoutBar onCheckout={handleCheckout} loading={loading} />
+      <StickyCheckoutBar onCheckout={() => handleCheckout("acelerado")} loading={loading} />
+
+      {/* Live purchase notifications */}
+      <LivePurchaseToast />
     </div>
   );
 }

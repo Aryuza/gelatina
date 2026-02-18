@@ -1,12 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Preference } from "mercadopago";
 import { getMercadoPagoClient } from "@/lib/mercadopago";
-import { PRODUCT_NAME, PRICE } from "@/lib/constants";
+import { PRODUCT_NAME, PRICE, TEA_NAME, COMBO_PRICE } from "@/lib/constants";
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name } = body;
+    const { name, plan } = body;
+
+    const isAccelerated = plan === "acelerado";
+    const finalPrice = isAccelerated ? COMBO_PRICE : PRICE;
+    const title = isAccelerated
+      ? `${PRODUCT_NAME} + ${TEA_NAME} - Plan Acelerado${name ? ` para ${name}` : ""}`
+      : `${PRODUCT_NAME} - Plan Personalizado${name ? ` para ${name}` : ""}`;
 
     const client = getMercadoPagoClient();
     const preference = new Preference(client);
@@ -18,10 +24,10 @@ export async function POST(request: NextRequest) {
       body: {
         items: [
           {
-            id: "gelatina-fit-plan",
-            title: `${PRODUCT_NAME} - Plan Personalizado${name ? ` para ${name}` : ""}`,
+            id: isAccelerated ? "gelatina-fit-plan-acelerado" : "gelatina-fit-plan",
+            title,
             quantity: 1,
-            unit_price: Number(PRICE),
+            unit_price: Number(finalPrice),
             currency_id: "ARS",
           },
         ],

@@ -5,6 +5,34 @@ export const CURRENCY = "ARS";
 export const NUTRITIONIST = "Lic. Carolina Méndez";
 export const NUTRITIONIST_LICENSE = "MN 8847";
 
+// Té Mounjaro combo
+export const TEA_NAME = "Té Mounjaro Japonés";
+export const COMBO_PRICE = 4900;
+export const COMBO_ORIGINAL_PRICE = 14999;
+export const TEA_ORIGINAL_PRICE = 6999;
+
+// All deliverables with images and drive links
+export const ALL_DELIVERABLES = [
+  { name: "Gelatina Fit — Plan Personalizado", icon: "⚖️", image: "/images/entregables/gelatina-fit-plan-personalizado.webp", driveUrl: "https://drive.google.com/file/d/1MBymg4lpZxusqHOnnAci22qOPcuKJBMW/view?usp=sharing", main: true },
+  { name: "Té Mounjaro Japonés", icon: "🍵", image: "/images/entregables/te-mounjaro-japones.webp", driveUrl: "https://drive.google.com/file/d/1fXz5prJhFoQT90Ed0zxnPERj02pE3R6D/view?usp=dri", highlighted: true },
+  { name: "Acelerador de Metabolismo", icon: "🧬", image: "/images/entregables/acelerador-de-metabolismo.webp", driveUrl: "https://drive.google.com/file/d/13DcaTndBLZCMRTmVNpryW8HnYL2PYElr/view?usp=sharing", bonus: true },
+  { name: "Definición de Metas Diarias", icon: "🎯", image: "/images/entregables/definicion-de-metas-diarias.webp", driveUrl: "https://drive.google.com/file/d/1j7TvtvAMbAg1KbtiaVlqRYqI-PC0PNQw/view?usp=sharing", bonus: true },
+  { name: "Plan de Alimentación Personalizado", icon: "🥗", image: "/images/entregables/plan-de-alimentacion-personalizado.webp", driveUrl: "https://drive.google.com/file/d/1MydGFzYDZTzuaVTAdU4EfHc0L0V-vw_5/view?usp=drive_link", bonus: true },
+  { name: "Protocolo Anti Efecto Rebote", icon: "🛡️", image: "/images/entregables/protocolo-anti-efecto-rebote.webp", driveUrl: "https://drive.google.com/file/d/1P2FpLPHdpNtN4sI_pPRrKQ3c15ypXvMW/view?usp=drive_link", bonus: true },
+  { name: "Protocolo 7 Días para Desinflamar", icon: "💧", image: "/images/entregables/protocolo-7-dias-para-desinflamar.webp", driveUrl: "https://drive.google.com/file/d/1VmaTW2NvIC6RHhGINfjNSg6NZ_8DZjNj/view?usp=drive_link", bonus: true },
+  { name: "Protocolo Anti Procrastinación", icon: "⚡", image: "/images/entregables/protocolo-anti-procrastinacion.webp", driveUrl: "https://drive.google.com/file/d/1wJQbA6TmWqt2VrjvXnHg4ocl4h8L-tHy/view?usp=drive_link", bonus: true },
+  { name: "Recetas Detox para Deshinchar", icon: "🥣", image: "/images/entregables/recetas-detox-para-deshinchar.webp", driveUrl: "https://drive.google.com/file/d/1vanSRfPEbajxH6LG9lQsiVuK1CTLq_iW/view?usp=sharing" },
+  { name: "Dieta Detox 21 Días", icon: "📅", image: "/images/entregables/dieta-detox-21-dias.webp", driveUrl: "https://drive.google.com/file/d/1HpzCMBvvjHl4B_7N0CZTTELm2KdbwdtD/view?usp=sharing" },
+  { name: "Jugos y Energizantes Naturales", icon: "🥤", image: "/images/entregables/jugos-y-energizantes-naturales.webp", driveUrl: "https://drive.google.com/file/d/18iwxPDZfdpl_fTCVsWEJypKljvIEa7Bv/view?usp=sharing" },
+  { name: "Detox para Cambiar tu Vida", icon: "🌱", image: "/images/entregables/detox-para-cambiar-tu-vida.webp", driveUrl: "https://drive.google.com/file/d/1oQ5-Jt7R04T2Rej8VE4_iRawlhOaiR3Z/view?usp=sharing" },
+  { name: "Detox con Med", icon: "💊", image: "/images/entregables/detox-con-med.webp", driveUrl: "https://drive.google.com/file/d/1pCgsOXtE68JiUxcc8sw-dUUhOkFGjQCc/view?usp=sharing" },
+  { name: "21 Jugos Detox", icon: "🍹", image: "/images/entregables/21-jugos-detox.webp", driveUrl: "https://drive.google.com/file/d/1Ney9M-NpEPjKpDlBtoeBzDh1XL3kFAYj/view?usp=sharing" },
+  { name: "21 Jugos Detox para Perder Peso", icon: "🔥", image: "/images/entregables/21-jugos-detox-para-perder-peso.webp", driveUrl: "https://drive.google.com/file/d/1zOWjEAcjivrJY2b4uossH0dLRjBwSa1n/view?usp=sharing" },
+];
+
+// Backward compat
+export const COMBO_DELIVERABLES = ALL_DELIVERABLES.filter(d => d.bonus || d.highlighted);
+
 export const AGE_OPTIONS = [
   { label: "18–24 años", value: "18-24" },
   { label: "25–34 años", value: "25-34" },

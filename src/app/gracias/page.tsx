@@ -3,7 +3,8 @@
 import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { trackPurchase } from "@/lib/analytics";
-import { PRODUCT_NAME, PRICE } from "@/lib/constants";
+import { PRODUCT_NAME, PRICE, ALL_DELIVERABLES } from "@/lib/constants";
+import Image from "next/image";
 import Button from "@/components/ui/Button";
 import { useQuizStore } from "@/store/quizStore";
 
@@ -105,110 +106,72 @@ function GraciasContent() {
       <div className="max-w-4xl mx-auto px-4 mt-12 space-y-12">
         {!isPending && (
           <>
-            {/* Main Featured Plan */}
-            <div className="bg-white rounded-[2.5rem] p-8 border-2 border-pink-500 shadow-2xl shadow-pink-500/20 relative overflow-hidden group">
-              <div className="absolute top-0 right-0 p-4">
-                <span className="bg-pink-100 text-pink-600 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                  Recurso Principal
-                </span>
-              </div>
-              <div className="flex flex-col md:flex-row items-center gap-8 relative z-10">
-                <div className="text-6xl md:text-7xl">⚖️</div>
-                <div className="flex-1 text-center md:text-left space-y-4">
-                  <div>
-                    <h2 className="text-3xl font-extrabold text-gray-900 leading-tight">
-                      GELATINA FIT - PLAN PERSONALIZADO
-                    </h2>
-                    <p className="text-gray-500 text-lg">Tu guía central y el corazón de tu transformación.</p>
-                  </div>
-                  <Button
-                    onClick={() => window.open("https://drive.google.com/file/d/1MBymg4lpZxusqHOnnAci22qOPcuKJBMW/view?usp=sharing", "_blank")}
-                    className="w-full md:w-auto px-12 py-4 text-lg"
-                    pulse
-                  >
-                    ABRIR PLAN PRINCIPAL →
-                  </Button>
-                </div>
-              </div>
-            </div>
-
-            {/* Other Resources Section */}
-            <div className="space-y-6">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-pink-100 flex items-center justify-center text-pink-600 shadow-sm">
-                  <span className="text-xl">📚</span>
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold text-gray-900">Guías Complementarias</h2>
-                  <p className="text-gray-500">Material extra para potenciar tus resultados</p>
-                </div>
+            {/* All Deliverables with images */}
+            <div className="space-y-8">
+              <div className="text-center space-y-2">
+                <h2 className="text-3xl font-extrabold text-gray-900">Tus {ALL_DELIVERABLES.length} Recursos</h2>
+                <p className="text-gray-500">Todo tu material listo para descargar</p>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {[
-                  {
-                    title: "Recetas Detox para Deshinchar",
-                    desc: "Para deshinchar y desinflamar eficazmente",
-                    icon: "🥣",
-                    link: "https://drive.google.com/file/d/1vanSRfPEbajxH6LG9lQsiVuK1CTLq_iW/view?usp=sharing",
-                  },
-                  {
-                    title: "DIETA DETOX 21 DIAS",
-                    desc: "Plan intensivo de limpieza profunda",
-                    icon: "📅",
-                    link: "https://drive.google.com/file/d/1HpzCMBvvjHl4B_7N0CZTTELm2KdbwdtD/view?usp=sharing",
-                  },
-                  {
-                    title: "JUGOS Y ENERGIZANTES NATURALES",
-                    desc: "Energía natural de frutas y verduras",
-                    icon: "🥤",
-                    link: "https://drive.google.com/file/d/18iwxPDZfdpl_fTCVsWEJypKljvIEa7Bv/view?usp=sharing",
-                  },
-                  {
-                    title: "DIETA ANTIINFLAMATORIA",
-                    desc: "Guía para reducir dolor e inflamación",
-                    icon: "🦴",
-                    link: "https://drive.google.com/file/d/1iC8L8Mxo_cg7qTFbDjD0HR9rUxt0e-63/view?usp=sharing",
-                  },
-                  {
-                    title: "DETOX PARA CAMBIAR TU VIDA",
-                    desc: "Transformación mental y hábitos",
-                    icon: "✨",
-                    link: "https://drive.google.com/file/d/1oQ5-Jt7R04T2Rej8VE4_iRawlhOaiR3Z/view?usp=sharing",
-                  },
-                  {
-                    title: "DETOX CON MED",
-                    desc: "Metodología avanzada de salud",
-                    icon: "🏥",
-                    link: "https://drive.google.com/file/d/1pCgsOXtE68JiUxcc8sw-dUUhOkFGjQCc/view?usp=sharing",
-                  },
-                  {
-                    title: "21 JUGOS DETOX",
-                    desc: "Una opción refrescante para cada día",
-                    icon: "🍹",
-                    link: "https://drive.google.com/file/d/1Ney9M-NpEPjKpDlBtoeBzDh1XL3kFAYj/view?usp=sharing",
-                  },
-                  {
-                    title: "21 JUGOS DETOX PARA PERDER PESO",
-                    desc: "Fórmulas específicas para quemar grasa",
-                    icon: "🔥",
-                    link: "https://drive.google.com/file/d/1zOWjEAcjivrJY2b4uossH0dLRjBwSa1n/view?usp=sharing",
-                  },
-                ].map((item) => (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                {ALL_DELIVERABLES.map((item) => (
                   <div
-                    key={item.title}
-                    className="group bg-white rounded-3xl p-6 border border-pink-100 hover:border-pink-300 transition-all hover:shadow-xl hover:shadow-pink-500/10 flex flex-col justify-between space-y-4"
+                    key={item.name}
+                    className={`group rounded-3xl overflow-hidden border flex flex-col transition-all hover:shadow-xl ${
+                      item.highlighted
+                        ? "border-pink-500 border-[3px] shadow-xl shadow-pink-500/15 md:col-span-2 lg:col-span-1"
+                        : item.main
+                        ? "border-pink-400 border-2 shadow-lg shadow-pink-500/10"
+                        : "border-pink-100 hover:border-pink-300 hover:shadow-pink-500/10"
+                    }`}
                   >
-                    <div className="space-y-3">
-                      <div className="text-3xl">{item.icon}</div>
-                      <h3 className="text-xl font-bold text-gray-900 group-hover:text-pink-600 transition-colors">
-                        {item.title}
-                      </h3>
-                      <p className="text-sm text-gray-500 leading-relaxed">{item.desc}</p>
+                    {/* Image */}
+                    <div className={`relative w-full aspect-[3/4] ${
+                      item.highlighted ? "bg-gradient-to-br from-pink-100 to-pink-50" : item.main ? "bg-pink-50" : "bg-gray-50"
+                    }`}>
+                      <Image
+                        src={item.image}
+                        alt={item.name}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      />
+                      {item.highlighted && (
+                        <div className="absolute top-3 left-3">
+                          <span className="bg-pink-500 text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider shadow-lg">
+                            Premium 🔥
+                          </span>
+                        </div>
+                      )}
+                      {item.main && (
+                        <div className="absolute top-3 left-3">
+                          <span className="bg-pink-600 text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider shadow-lg">
+                            Plan Principal ⭐
+                          </span>
+                        </div>
+                      )}
                     </div>
-                    <Button onClick={() => window.open(item.link, "_blank")} variant="outline" className="w-full border-pink-200 text-pink-600 hover:bg-pink-50">
-                      Abrir PDF →
-                    </Button>
+
+                    {/* Content */}
+                    <div className="p-5 flex flex-col flex-1 justify-between gap-4 bg-white">
+                      <h3 className={`text-lg font-bold leading-tight ${
+                        item.highlighted ? "text-pink-700" : "text-gray-900"
+                      }`}>
+                        {item.name}
+                      </h3>
+                      <Button
+                        onClick={() => window.open(item.driveUrl, "_blank")}
+                        variant={item.highlighted || item.main ? undefined : "outline"}
+                        className={
+                          item.highlighted || item.main
+                            ? "w-full"
+                            : "w-full border-pink-200 text-pink-600 hover:bg-pink-50"
+                        }
+                        pulse={item.highlighted || item.main}
+                      >
+                        {item.highlighted ? "Abrir Ahora 🔥" : item.main ? "Abrir Plan Principal →" : "Abrir PDF →"}
+                      </Button>
+                    </div>
                   </div>
                 ))}
               </div>
